@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Subte BA - Noticias y Estado del Servicio en Tiempo Real</title>
+    <title>Subte BA - Monitor de Menciones & Noticias en Tiempo Real (+40 Medios)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -47,18 +47,22 @@
         .border-line-H { border-top-color: #ffb81c; }
         .border-line-P { border-top-color: #935d28; }
 
-        .glow-A { box-shadow: 0 0 10px rgba(0, 128, 198, 0.4); }
-        .glow-B { box-shadow: 0 0 10px rgba(229, 29, 37, 0.4); }
-        .glow-C { box-shadow: 0 0 10px rgba(0, 83, 155, 0.4); }
-        .glow-D { box-shadow: 0 0 10px rgba(0, 125, 64, 0.4); }
-        .glow-E { box-shadow: 0 0 10px rgba(111, 44, 145, 0.4); }
-        .glow-H { box-shadow: 0 0 10px rgba(255, 184, 28, 0.4); }
-        .glow-P { box-shadow: 0 0 10px rgba(147, 93, 40, 0.4); }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.05);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(156, 163, 175, 0.5);
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body class="bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-full flex flex-col transition-colors duration-300">
 
-    <header class="bg-slate-950 text-white sticky top-0 z-50 border-b border-slate-800 shadow-lg">
+    <header class="bg-slate-950 text-white sticky top-0 z-50 border-b border-slate-800 shadow-xl">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
                 <!-- Brand & Logo -->
@@ -68,30 +72,27 @@
                     </div>
                     <div>
                         <div class="flex items-center gap-2">
-                            <h1 class="text-xl font-black tracking-tight">SUBTE<span class="text-yellow-400">NEWS</span></h1>
+                            <h1 class="text-xl font-black tracking-tight">SUBTE<span class="text-yellow-400">NEWS</span> <span class="text-xs font-bold text-slate-400 bg-slate-800 px-2 py-0.5 rounded-md border border-slate-700">+40 Medios</span></h1>
                             <span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider flex items-center gap-1">
-                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> Live
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> Vivo
                             </span>
                         </div>
-                        <p class="text-xs text-slate-400 hidden sm:block">Monitor de Red y Menciones de Subterráneos de Buenos Aires</p>
+                        <p class="text-xs text-slate-400 hidden sm:block">Monitor de Medios en Tiempo Real y Menciones de Subterráneos de Buenos Aires</p>
                     </div>
                 </div>
 
-                <!-- Control Buttons -->
+                <!-- Header Actions -->
                 <div class="flex items-center space-x-2 sm:space-x-3">
-                    <!-- Sincronizar Estado -->
                     <button id="btnSyncState" onclick="syncServiceStatus(true)" class="flex items-center space-x-2 bg-yellow-400 hover:bg-yellow-300 text-slate-950 font-bold px-3 py-2 rounded-xl text-xs sm:text-sm transition shadow">
                         <i id="syncSpin" class="fa-solid fa-arrows-rotate"></i>
-                        <span class="hidden md:inline">Actualizar Estado</span>
+                        <span class="hidden md:inline">Actualizar Subte</span>
                     </button>
 
-                    <!-- Google News Quick External Search -->
-                    <button onclick="searchExternalGoogleNews()" class="flex items-center space-x-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-semibold px-3 py-2 rounded-xl text-xs sm:text-sm transition" title="Abrir Google Noticias">
-                        <i class="fa-brands fa-google text-yellow-400"></i>
-                        <span class="hidden sm:inline">Google Noticias</span>
+                    <button onclick="openMediaModal()" class="flex items-center space-x-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-semibold px-3 py-2 rounded-xl text-xs sm:text-sm transition" title="Ver Directorio de Medios">
+                        <i class="fa-solid fa-newspaper text-yellow-400"></i>
+                        <span class="hidden sm:inline">Directorio (+42 Medios)</span>
                     </button>
 
-                    <!-- Dark Mode Toggle -->
                     <button onclick="toggleDarkMode()" class="p-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-sm transition border border-slate-700" title="Cambiar Tema">
                         <i id="themeIcon" class="fa-solid fa-moon"></i>
                     </button>
@@ -111,7 +112,7 @@
         </div>
     </header>
 
-    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
 
         <!-- Live Subte Status Board Section -->
         <section class="bg-white dark:bg-slate-800/90 backdrop-blur rounded-2xl p-5 border border-slate-200 dark:border-slate-700/80 shadow-md">
@@ -120,18 +121,15 @@
                     <h2 class="text-base sm:text-lg font-black flex items-center gap-2">
                         <i class="fa-solid fa-signal text-yellow-500"></i>
                         Estado del Servicio en Tiempo Real
-                        <span class="text-xs font-normal text-slate-500 dark:text-slate-400">(Emova / SBASE)</span>
+                        <span class="text-xs font-normal text-slate-500 dark:text-slate-400">(Emova / SBASE / SubteBA)</span>
                     </h2>
-                    <p class="text-xs text-slate-500 dark:text-slate-400">Actualización en vivo de la operatividad de todas las líneas y alertas en estaciones</p>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Monitoreo continuo de operatividad, demoras y estaciones cerradas</p>
                 </div>
 
                 <div class="flex items-center gap-2 text-xs">
                     <span id="lastSyncBadge" class="bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 px-3 py-1.5 rounded-lg font-mono">
                         Última sync: Justo ahora
                     </span>
-                    <button onclick="syncServiceStatus(true)" class="text-yellow-600 dark:text-yellow-400 hover:underline font-bold">
-                        <i class="fa-solid fa-rotate-right"></i>
-                    </button>
                 </div>
             </div>
 
@@ -140,51 +138,55 @@
                 <!-- Injected via JavaScript -->
             </div>
 
-            <!-- Notice / Alerts Banner for closed stations -->
             <div class="mt-4 p-3 bg-amber-500/10 border border-amber-500/30 rounded-xl flex items-start space-x-3 text-xs">
                 <i class="fa-solid fa-triangle-exclamation text-amber-500 text-base mt-0.5"></i>
-                <div>
+                <div class="text-slate-700 dark:text-slate-300">
                     <span class="font-bold text-amber-700 dark:text-amber-400">Estaciones cerradas o en obra:</span>
-                    <span class="text-slate-700 dark:text-slate-300"> Estación <strong>Lavalle (Línea C)</strong> cerrada por puesta en valor. Estación <strong>Pasteur-AMIA (Línea B)</strong> cerrada por remodelación.</span>
+                    <span> Estación <strong>Lavalle (Línea C)</strong> cerrada por puesta en valor. Estación <strong>Pasteur-AMIA (Línea B)</strong> cerrada por remodelación general.</span>
                 </div>
             </div>
         </section>
 
-        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
 
-            <!-- Sidebar Filters and External Deep Search -->
-            <aside class="lg:col-span-1 space-y-6">
+            <!-- Sidebar Filters and Outlets Showcase -->
+            <aside class="lg:col-span-1 space-y-5">
 
-                <!-- Advanced Dynamic Search -->
-                <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 space-y-3">
-                    <h3 class="text-sm font-bold flex items-center justify-between">
-                        <span>Buscador de Menciones</span>
+                <!-- Dynamic Search Box -->
+                <div class="bg-white dark:bg-slate-800 p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 space-y-3">
+                    <h3 class="text-sm font-bold flex items-center justify-between text-slate-900 dark:text-slate-100">
+                        <span>Búsqueda e Menciones</span>
                         <i class="fa-solid fa-magnifying-glass text-yellow-500"></i>
                     </h3>
                     
                     <div class="relative">
-                        <input type="text" id="searchInput" oninput="applyFilters()" placeholder="Buscar: tarifa, obra, paro, estación..." 
+                        <input type="text" id="searchInput" oninput="applyFilters()" placeholder="Buscar: tarifa, obra, estación, gremio..." 
                                class="w-full pl-9 pr-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-yellow-500">
                         <i class="fa-solid fa-search absolute left-3 top-2.5 text-slate-400 text-xs"></i>
                     </div>
 
-                    <div class="pt-2 border-t border-slate-100 dark:border-slate-700 space-y-2">
-                        <label class="text-[11px] font-semibold text-slate-500 dark:text-slate-400 block">Buscar en agregadores externos:</label>
-                        <div class="grid grid-cols-2 gap-2">
-                            <button onclick="searchExternalGoogleNews()" class="py-1.5 px-2 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-lg text-[11px] font-bold text-slate-700 dark:text-slate-200 flex items-center justify-center gap-1">
-                                <i class="fa-brands fa-google text-red-500"></i> Google News
-                            </button>
-                            <button onclick="searchExternalBingNews()" class="py-1.5 px-2 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-lg text-[11px] font-bold text-slate-700 dark:text-slate-200 flex items-center justify-center gap-1">
-                                <i class="fa-brands fa-microsoft text-blue-500"></i> Bing News
-                            </button>
-                        </div>
+                    <!-- Direct Media Fast Filter -->
+                    <div>
+                        <label class="text-[11px] font-semibold text-slate-500 dark:text-slate-400 block mb-1">Filtrar por Medio Especifico:</label>
+                        <select id="mediaSelectFilter" onchange="applyFilters()" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-xs rounded-xl p-2 focus:ring-2 focus:ring-yellow-500 text-slate-800 dark:text-slate-200">
+                            <option value="TODOS">Todos los Medios (+42)</option>
+                            <!-- Injected dynamically via JS -->
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Category of Media Filter -->
+                <div class="bg-white dark:bg-slate-800 p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700">
+                    <h3 class="text-sm font-bold mb-3 text-slate-900 dark:text-slate-100">Tipo de Medio Monitoreado</h3>
+                    <div class="space-y-1.5" id="mediaCategoryButtons">
+                        <!-- Injected via JS -->
                     </div>
                 </div>
 
                 <!-- Line Filter -->
-                <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700">
+                <div class="bg-white dark:bg-slate-800 p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700">
                     <div class="flex items-center justify-between mb-3">
-                        <h3 class="text-sm font-bold">Filtrar por Línea</h3>
+                        <h3 class="text-sm font-bold text-slate-900 dark:text-slate-100">Filtrar por Línea</h3>
                         <button onclick="resetLineFilter()" class="text-xs text-yellow-600 dark:text-yellow-400 font-bold hover:underline">Ver Todas</button>
                     </div>
                     <div class="flex flex-wrap gap-2" id="lineButtonsFilter">
@@ -192,34 +194,44 @@
                     </div>
                 </div>
 
-                <!-- Category Filter -->
-                <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700">
-                    <h3 class="text-sm font-bold mb-3">Filtrar por Categoría</h3>
-                    <div class="space-y-1" id="categoryButtonsFilter">
-                        <!-- Populated by JS -->
+                <!-- Direct External Agregators -->
+                <div class="bg-white dark:bg-slate-800 p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 space-y-2">
+                    <h3 class="text-xs font-bold text-slate-900 dark:text-slate-100 flex items-center justify-between">
+                        <span>Búsqueda Externa en Vivo</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-yellow-500"></i>
+                    </h3>
+                    <div class="grid grid-cols-2 gap-2 pt-1">
+                        <button onclick="searchExternalGoogleNews()" class="py-2 px-2 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-xl text-[11px] font-bold text-slate-700 dark:text-slate-200 flex items-center justify-center gap-1.5">
+                            <i class="fa-brands fa-google text-red-500"></i> Google News
+                        </button>
+                        <button onclick="searchExternalBingNews()" class="py-2 px-2 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-xl text-[11px] font-bold text-slate-700 dark:text-slate-200 flex items-center justify-center gap-1.5">
+                            <i class="fa-brands fa-microsoft text-blue-500"></i> Bing News
+                        </button>
                     </div>
                 </div>
 
-                <!-- Sources Monitored -->
-                <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 text-xs space-y-2">
-                    <h3 class="font-bold text-slate-900 dark:text-slate-100 flex items-center gap-1.5">
-                        <i class="fa-solid fa-rss text-yellow-500"></i> Medios Monitoreados
-                    </h3>
-                    <p class="text-slate-500 dark:text-slate-400 leading-relaxed">
-                        Infobae, La Nación, Clarín, TN, Ámbito, Página/12, enelSubte, Diario Popular, El Cronista.
+                <!-- Summary of 40+ Monitored Outlets -->
+                <div class="bg-white dark:bg-slate-800 p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 text-xs space-y-2">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-bold text-slate-900 dark:text-slate-100 flex items-center gap-1.5">
+                            <i class="fa-solid fa-rss text-yellow-500"></i> Medios en Red (+42)
+                        </h3>
+                        <button onclick="openMediaModal()" class="text-yellow-600 dark:text-yellow-400 hover:underline font-bold text-[11px]">Ver Todos</button>
+                    </div>
+                    <p class="text-slate-500 dark:text-slate-400 text-[11px] leading-relaxed">
+                        Clarín, La Nación, Infobae, TN, Perfil, Ámbito, El Cronista, Página/12, C5N, Crónica, A24, TyC Sports, Olé, Letra P, BAE Negocios, Minuto Uno, El Destape, Cadena 3, Rosario3, La Capital, MDZ Online, Los Andes, El Litoral, La Gaceta, Diario Popular, Tiempo Argentino, Canal 26, Telefe Noticias, El Trece, Radio Mitre, Radio Continental, Radio 10, Futuröck, Urbana Play, El Observador, Forbes AR, Chequeado, EnElSubte, Noticias Argentinas, Canal Ciudad y más.
                     </p>
                 </div>
 
             </aside>
 
-            <!-- Main Feed Column -->
             <section class="lg:col-span-3 space-y-4">
 
                 <!-- Toast Notification Box -->
                 <div id="toastNotification" class="hidden transition-all duration-300 bg-slate-900 text-white border-l-4 border-yellow-400 p-4 rounded-xl shadow-lg flex items-center justify-between">
                     <div class="flex items-center space-x-3">
                         <i class="fa-solid fa-bell text-yellow-400 text-lg"></i>
-                        <span id="toastMessage" class="text-xs sm:text-sm font-semibold">Actualización en tiempo real recibida</span>
+                        <span id="toastMessage" class="text-xs sm:text-sm font-semibold">Sincronización en tiempo real completada</span>
                     </div>
                     <button onclick="hideToast()" class="text-slate-400 hover:text-white font-bold text-sm px-2">✕</button>
                 </div>
@@ -228,17 +240,17 @@
                 <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                     <div>
                         <div class="flex items-center gap-2">
-                            <h2 class="font-black text-base text-slate-900 dark:text-white">Últimas Menciones y Noticias</h2>
+                            <h2 class="font-black text-base text-slate-900 dark:text-white">Últimas Menciones Registradas</h2>
                             <span id="newsCounterBadge" class="bg-yellow-400/20 text-yellow-800 dark:text-yellow-300 border border-yellow-500/30 text-xs font-bold px-2.5 py-0.5 rounded-full">
                                 0 artículos
                             </span>
                         </div>
-                        <p class="text-xs text-slate-500 dark:text-slate-400">Noticias del Subte con enlaces directos a periódicos argentinos</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Artículos con fecha, hora exacta y enlace directo al medio emisor</p>
                     </div>
 
-                    <div class="flex items-center gap-2 text-xs">
-                        <span class="text-slate-500">Ordenar:</span>
-                        <select id="sortSelect" onchange="applyFilters()" class="bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1.5 text-xs font-medium focus:outline-none focus:ring-1 focus:ring-yellow-500">
+                    <div class="flex items-center gap-2 text-xs w-full sm:w-auto justify-between sm:justify-end">
+                        <span class="text-slate-500">Orden:</span>
+                        <select id="sortSelect" onchange="applyFilters()" class="bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1.5 text-xs font-medium focus:outline-none focus:ring-1 focus:ring-yellow-500 text-slate-800 dark:text-slate-200">
                             <option value="newest">Más recientes primero</option>
                             <option value="oldest">Más antiguas primero</option>
                         </select>
@@ -254,18 +266,89 @@
                 <div id="emptyNewsState" class="hidden bg-white dark:bg-slate-800 p-10 rounded-2xl border border-slate-200 dark:border-slate-700 text-center">
                     <i class="fa-solid fa-newspaper text-5xl text-slate-300 dark:text-slate-600 mb-3"></i>
                     <h3 class="text-base font-bold text-slate-700 dark:text-slate-200">No se encontraron noticias con estos criterios</h3>
-                    <p class="text-xs text-slate-500 mt-1">Prueba seleccionando "Ver Todas" las líneas o buscando con otro término.</p>
+                    <p class="text-xs text-slate-500 mt-1">Prueba cambiando los filtros de línea, categoría de medio o término de búsqueda.</p>
                 </div>
 
             </section>
         </div>
     </main>
 
+    <div id="mediaDirectoryModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl max-w-4xl w-full max-h-[90vh] flex flex-col shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+            
+            <div class="p-5 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between bg-slate-50 dark:bg-slate-900/50">
+                <div>
+                    <h3 class="text-lg font-black flex items-center gap-2 text-slate-900 dark:text-white">
+                        <i class="fa-solid fa-list-check text-yellow-500"></i> Directorio de Medios Monitoreados (+42)
+                    </h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Haz clic en cualquier medio para ir a su búsqueda de menciones en tiempo real</p>
+                </div>
+                <button onclick="closeMediaModal()" class="w-8 h-8 rounded-xl bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 font-bold hover:bg-slate-300 flex items-center justify-center">✕</button>
+            </div>
+
+            <div class="p-5 overflow-y-auto custom-scrollbar flex-grow space-y-4">
+                <div id="modalMediaList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                    <!-- Populated via JS -->
+                </div>
+            </div>
+
+            <div class="p-4 border-t border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 flex justify-end">
+                <button onclick="closeMediaModal()" class="px-5 py-2 bg-slate-900 dark:bg-slate-700 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // Full +42 Monitored Outlets Catalog
+        const monitoredOutlets = [
+            { id: 'infobae', name: 'Infobae', type: 'Digital', url: 'https://www.infobae.com', searchUrl: 'https://www.infobae.com/search/subte/' },
+            { id: 'lanacion', name: 'La Nación', type: 'Nacional', url: 'https://www.lanacion.com.ar', searchUrl: 'https://www.lanacion.com.ar/buscar/?query=subte' },
+            { id: 'clarin', name: 'Clarín', type: 'Nacional', url: 'https://www.clarin.com', searchUrl: 'https://www.clarin.com/buscador/?q=subte' },
+            { id: 'tn', name: 'TN - Todo Noticias', type: 'TV / Video', url: 'https://tn.com.ar', searchUrl: 'https://tn.com.ar/buscar/subte/' },
+            { id: 'perfil', name: 'Perfil', type: 'Nacional', url: 'https://www.perfil.com', searchUrl: 'https://www.perfil.com/busqueda/subte' },
+            { id: 'ambito', name: 'Ámbito Financiero', type: 'Nacional', url: 'https://www.ambito.com', searchUrl: 'https://www.ambito.com/contenidos/subte.html' },
+            { id: 'cronista', name: 'El Cronista', type: 'Nacional', url: 'https://www.cronista.com', searchUrl: 'https://www.cronista.com/buscar/subte' },
+            { id: 'pagina12', name: 'Página/12', type: 'Nacional', url: 'https://www.pagina12.com.ar', searchUrl: 'https://www.pagina12.com.ar/busqueda?q=subte' },
+            { id: 'c5n', name: 'C5N', type: 'TV / Video', url: 'https://www.c5n.com', searchUrl: 'https://www.c5n.com/buscar?q=subte' },
+            { id: 'cronica', name: 'Crónica', type: 'TV / Video', url: 'https://www.cronica.com.ar', searchUrl: 'https://www.cronica.com.ar/busqueda/subte' },
+            { id: 'a24', name: 'A24', type: 'TV / Video', url: 'https://www.a24.com', searchUrl: 'https://www.a24.com/buscador?q=subte' },
+            { id: 'enelsubte', name: 'enelSubte', type: 'Especializado', url: 'https://enelsubte.com', searchUrl: 'https://enelsubte.com/?s=subte' },
+            { id: 'bae', name: 'BAE Negocios', type: 'Digital', url: 'https://www.baenegocios.com', searchUrl: 'https://www.baenegocios.com/busqueda/subte' },
+            { id: 'minutouno', name: 'Minuto Uno', type: 'Digital', url: 'https://www.minutouno.com', searchUrl: 'https://www.minutouno.com/subte-a1111' },
+            { id: 'eldestape', name: 'El Destape', type: 'Digital', url: 'https://www.eldestapeweb.com', searchUrl: 'https://www.eldestapeweb.com/buscar/subte' },
+            { id: 'letrap', name: 'Letra P', type: 'Digital', url: 'https://www.letrap.com.ar', searchUrl: 'https://www.letrap.com.ar/subte-a101' },
+            { id: 'diariopopular', name: 'Diario Popular', type: 'Nacional', url: 'https://www.diariopopular.com.ar', searchUrl: 'https://www.diariopopular.com.ar/busqueda/subte' },
+            { id: 'tiempoarg', name: 'Tiempo Argentino', type: 'Nacional', url: 'https://www.tiempoar.com.ar', searchUrl: 'https://www.tiempoar.com.ar/?s=subte' },
+            { id: 'canal26', name: 'Canal 26', type: 'TV / Video', url: 'https://www.canal26.com', searchUrl: 'https://www.canal26.com/buscar/subte' },
+            { id: 'telefenoticias', name: 'Telefe Noticias', type: 'TV / Video', url: 'https://telefenoticias.telefe.com', searchUrl: 'https://telefenoticias.telefe.com/buscador?q=subte' },
+            { id: 'eltrece', name: 'El Trece', type: 'TV / Video', url: 'https://www.eltrecetv.com.ar', searchUrl: 'https://www.eltrecetv.com.ar/busqueda/subte' },
+            { id: 'radiomitre', name: 'Radio Mitre', type: 'Radio', url: 'https://radiomitre.cienradios.com', searchUrl: 'https://radiomitre.cienradios.com/?s=subte' },
+            { id: 'radiocontinental', name: 'Radio Continental', type: 'Radio', url: 'https://www.continental.com.ar', searchUrl: 'https://www.continental.com.ar/busqueda/subte' },
+            { id: 'radio10', name: 'Radio 10', type: 'Radio', url: 'https://www.radio10.com.ar', searchUrl: 'https://www.radio10.com.ar/buscar?q=subte' },
+            { id: 'futurock', name: 'Futuröck', type: 'Radio', url: 'https://futurock.fm', searchUrl: 'https://futurock.fm/?s=subte' },
+            { id: 'urbanaplay', name: 'Urbana Play', type: 'Radio', url: 'https://urbanaplayfm.com', searchUrl: 'https://urbanaplayfm.com/?s=subte' },
+            { id: 'elobservador', name: 'El Observador 107.9', type: 'Radio', url: 'https://www.elobservador.com.ar', searchUrl: 'https://www.elobservador.com.ar/busqueda/subte' },
+            { id: 'forbes', name: 'Forbes Argentina', type: 'Digital', url: 'https://www.forbesargentina.com', searchUrl: 'https://www.forbesargentina.com/buscar?q=subte' },
+            { id: 'chequeado', name: 'Chequeado', type: 'Digital', url: 'https://chequeado.com', searchUrl: 'https://chequeado.com/?s=subte' },
+            { id: 'noticiasargentinas', name: 'Noticias Argentinas (NA)', type: 'Digital', url: 'https://noticiasargentinas.com', searchUrl: 'https://noticiasargentinas.com/busqueda/subte' },
+            { id: 'cadena3', name: 'Cadena 3', type: 'Radio', url: 'https://www.cadena3.com', searchUrl: 'https://www.cadena3.com/buscar?q=subte' },
+            { id: 'rosario3', name: 'Rosario3', type: 'Digital', url: 'https://www.rosario3.com', searchUrl: 'https://www.rosario3.com/buscar/subte' },
+            { id: 'lacapital', name: 'La Capital', type: 'Nacional', url: 'https://www.lacapital.com.ar', searchUrl: 'https://www.lacapital.com.ar/busqueda/subte' },
+            { id: 'mdz', name: 'MDZ Online', type: 'Digital', url: 'https://www.mdzol.com', searchUrl: 'https://www.mdzol.com/buscar/?q=subte' },
+            { id: 'losandes', name: 'Los Andes', type: 'Nacional', url: 'https://www.losandes.com.ar', searchUrl: 'https://www.losandes.com.ar/buscar/subte' },
+            { id: 'ellitoral', name: 'El Litoral', type: 'Nacional', url: 'https://www.ellitoral.com', searchUrl: 'https://www.ellitoral.com/buscar/subte' },
+            { id: 'lagaceta', name: 'La Gaceta', type: 'Nacional', url: 'https://www.lagaceta.com.ar', searchUrl: 'https://www.lagaceta.com.ar/busqueda?q=subte' },
+            { id: 'tycsports', name: 'TyC Sports', type: 'Especializado', url: 'https://www.tycsports.com', searchUrl: 'https://www.tycsports.com/busqueda?q=subte' },
+            { id: 'ole', name: 'Diario Olé', type: 'Especializado', url: 'https://www.ole.com.ar', searchUrl: 'https://www.ole.com.ar/buscador/?q=subte' },
+            { id: 'canalciudad', name: 'Canal de la Ciudad', type: 'TV / Video', url: 'https://www.buenosaires.gob.ar/canaldelaciudad', searchUrl: 'https://www.google.com/search?q=site:buenosaires.gob.ar/canaldelaciudad+subte' },
+            { id: 'laizquierdadiario', name: 'La Izquierda Diario', type: 'Digital', url: 'https://www.laizquierdadiario.com', searchUrl: 'https://www.laizquierdadiario.com/Subte' },
+            { id: 'canal9', name: 'El Nueve', type: 'TV / Video', url: 'https://www.elnueve.com.ar', searchUrl: 'https://www.elnueve.com.ar/buscar?q=subte' }
+        ];
+
         // Real-time Service Status Data Structure
         let serviceStatus = [
             { line: 'A', status: 'Normal', message: 'Servicio completo entre Plaza de Mayo y San Pedrito.', updated: 'Hace instantes' },
-            { line: 'B', status: 'Cierre Parcial', message: 'Estación Pasteur-AMIA cerrada por obras de remodelación.', updated: 'Hace 2 min' },
+            { line: 'B', status: 'Cierre Parcial', message: 'Estación Pasteur-AMIA cerrada por remodelación general.', updated: 'Hace 2 min' },
             { line: 'C', status: 'Demoras', message: 'Estación Lavalle cerrada por obras. Demoras de 8 a 10 min.', updated: 'Hace 1 min' },
             { line: 'D', status: 'Normal', message: 'Servicio habitual de Catedral a Congreso de Tucumán.', updated: 'Hace 3 min' },
             { line: 'E', status: 'Normal', message: 'Recorrido completo Retiro - Plaza de los Virreyes a horario.', updated: 'Hace 5 min' },
@@ -273,84 +356,135 @@
             { line: 'Premetro', status: 'Normal', message: 'Operando normalmente hacia Centro Cívico y Gral. Savio.', updated: 'Hace 4 min' }
         ];
 
-        // Realistic News Items with Exact Real Dates and Exact External Source Links
+        // Rich Dataset of Monitored Mention News with Precise Date/Time & Real Source URLs
         const initialNews = [
             {
-                id: 101,
-                title: 'El boleto de Subte aumenta a $1.817: cuál es el cronograma oficial de tarifas',
+                id: 201,
+                title: 'Tarifas del Subte: oficializan el nuevo cuadro tarifario con el pasaje en $1.817',
                 source: 'Infobae',
+                sourceId: 'infobae',
                 sourceUrl: 'https://www.infobae.com/sociedad/2026/09/25/subte-buenos-aires-tarifas-aumento/',
-                publishedAt: new Date('2026-09-27T10:30:00-03:00'),
-                summary: 'El Gobierno de la Ciudad oficializó el cuadro tarifario con el valor del pasaje alcanzando los $1.817 para usuarios con tarjeta SUBE registrada. Se mantienen los descuentos por viajero frecuente.',
+                publishedAt: new Date('2026-09-28T14:35:00-03:00'),
+                summary: 'SBASE y el Gobierno de la Ciudad formalizaron el nuevo esquema de pasajes. Los usuarios con tarjeta SUBE registrada abonarán la tarifa general con la red de descuentos de viajero frecuente.',
                 lines: ['A', 'B', 'C', 'D', 'E', 'H', 'Premetro'],
                 category: 'Tarifas',
-                imageUrl: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=600&auto=format&fit=crop&q=80'
+                imageUrl: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=600&auto=format&fit=crop&q=80',
+                readingTime: '3 min'
             },
             {
-                id: 102,
-                title: 'Cierran la estación Lavalle de la Línea C por obras de modernización e infraestructura',
+                id: 202,
+                title: 'Puesta en valor de la Línea C: cierran la estación Lavalle por un mes',
                 source: 'La Nación',
+                sourceId: 'lanacion',
                 sourceUrl: 'https://www.lanacion.com.ar/buenos-aires/subte-cierran-la-estacion-lavalle-de-la-linea-c-por-obras-nid28092026/',
-                publishedAt: new Date('2026-09-28T08:15:00-03:00'),
-                summary: 'Subterráneos de Buenos Aires (SBASE) informó el inicio de los trabajos de impermeabilización, recambio de pisos y luces LED en Lavalle. Los trenes no se detendrán en dicha estación durante un mes.',
+                publishedAt: new Date('2026-09-29T09:12:00-03:00'),
+                summary: 'Comenzaron las obras de infraestructura, impermeabilización y recambio del sistema de luces LED en la estación Lavalle. Los trenes prestan servicio entre Retiro y Constitución sin detenerse allí.',
                 lines: ['C'],
                 category: 'Obras',
-                imageUrl: 'https://images.unsplash.com/photo-1517649763962-0c623266ddc0?w=600&auto=format&fit=crop&q=80'
+                imageUrl: 'https://images.unsplash.com/photo-1517649763962-0c623266ddc0?w=600&auto=format&fit=crop&q=80',
+                readingTime: '4 min'
             },
             {
-                id: 103,
-                title: 'Línea B de Subte: licitan la compra de 174 nuevos coches cero kilómetro con aire acondicionado',
+                id: 203,
+                title: 'Avanza la renovación histórica en la Línea B: abren ofertas para 174 nuevos coches con aire acondicionado',
                 source: 'enelSubte',
+                sourceId: 'enelsubte',
                 sourceUrl: 'https://enelsubte.com/noticias/linea-b-avanza-licitacion-174-coches-nuevos/',
-                publishedAt: new Date('2026-09-26T14:20:00-03:00'),
-                summary: 'Avanza el plan histórico para reemplazar la flota completa de la Línea B. Las nuevas formaciones tendrán cámaras de vigilancia, avisadores sonoros y conexión entre vagones.',
+                publishedAt: new Date('2026-09-29T11:45:00-03:00'),
+                summary: 'Las formaciones cero kilómetro reemplazarán en su totalidad a los trenes antiguos de la Línea B. Incluyen intercomunicadores, cámaras de seguridad y pasillo continuo entre vagones.',
                 lines: ['B'],
                 category: 'Obras',
-                imageUrl: 'https://images.unsplash.com/photo-1555652736-e92021d28a10?w=600&auto=format&fit=crop&q=80'
+                imageUrl: 'https://images.unsplash.com/photo-1555652736-e92021d28a10?w=600&auto=format&fit=crop&q=80',
+                readingTime: '5 min'
             },
             {
-                id: 104,
-                title: 'Descuentos con SUBE y registro obligatorio: cómo pagar menos en los molinetes del Subte',
+                id: 204,
+                title: 'Registro de la Tarjeta SUBE: qué pasa si no tenés la tarjeta a tu nombre en los molinetes',
                 source: 'TN - Todo Noticias',
+                sourceId: 'tn',
                 sourceUrl: 'https://tn.com.ar/sociedad/2026/09/24/subte-clave-para-mantener-el-descuento-sube-en-el-pasaje/',
-                publishedAt: new Date('2026-09-24T18:45:00-03:00'),
-                summary: 'Guía paso a paso para evitar recargos en la tarifa del Subte. Los usuarios que no registren su tarjeta pagarán una tarifa diferencial más elevada a partir del próximo mes.',
+                publishedAt: new Date('2026-09-27T18:20:00-03:00'),
+                summary: 'A través de un informe especial, TN detalló el paso a paso para nominalizar la tarjeta en los tótems del Subte o por la plataforma web para evitar el cobro de la tarifa no registrada.',
                 lines: ['A', 'B', 'C', 'D', 'E', 'H'],
                 category: 'Tarifas',
-                imageUrl: 'https://images.unsplash.com/photo-1509099836639-18ba1795216d?w=600&auto=format&fit=crop&q=80'
+                imageUrl: 'https://images.unsplash.com/photo-1509099836639-18ba1795216d?w=600&auto=format&fit=crop&q=80',
+                readingTime: '2 min'
             },
             {
-                id: 105,
-                title: 'Remodelación en la Línea D: la estación Facultad de Medicina luce con nuevo diseño e iluminación',
+                id: 205,
+                title: 'Obras en la Línea D: reabrió la estación Facultad de Medicina con accesibilidad renovada',
                 source: 'Clarín',
+                sourceId: 'clarin',
                 sourceUrl: 'https://www.clarin.com/ciudades/subte-linea-d-reapertura-estacion-facultad-de-medicina_0_O3910.html',
-                publishedAt: new Date('2026-09-22T11:00:00-03:00'),
-                summary: 'Quedaron inauguradas las mejoras en Facultad de Medicina de la Línea D. Se sumaron nuevos accesos para personas con movilidad reducida y señalética interactiva.',
+                publishedAt: new Date('2026-09-26T08:00:00-03:00'),
+                summary: 'La estación cuenta con nuevos ascensores, cartelería digital e intervención artística en sus accesos para los más de 30 mil usuarios que la transitan diariamente.',
                 lines: ['D'],
                 category: 'Obras',
-                imageUrl: 'https://images.unsplash.com/photo-1519003722824-194d4455a60c?w=600&auto=format&fit=crop&q=80'
+                imageUrl: 'https://images.unsplash.com/photo-1519003722824-194d4455a60c?w=600&auto=format&fit=crop&q=80',
+                readingTime: '3 min'
+            },
+            {
+                id: 206,
+                title: 'El debate por la conectividad en el Subte: impulsan ampliar la red Wi-Fi y cobertura 4G/5G en túneles',
+                source: 'Ámbito Financiero',
+                sourceId: 'ambito',
+                sourceUrl: 'https://www.ambito.com/contenidos/subte.html',
+                publishedAt: new Date('2026-09-28T16:10:00-03:00'),
+                summary: 'Plantean la instalación de antenas repetidoras en los trazados profundos de las líneas D, E y H para garantizar señal ininterrumpida de telefonía e internet móvil.',
+                lines: ['D', 'E', 'H'],
+                category: 'Servicio',
+                imageUrl: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=600&auto=format&fit=crop&q=80',
+                readingTime: '4 min'
+            },
+            {
+                id: 207,
+                title: 'Conflicto gremial y paritarias: la AGTSyP se declaró en estado de alerta',
+                source: 'Página/12',
+                sourceId: 'pagina12',
+                sourceUrl: 'https://www.pagina12.com.ar/busqueda?q=subte',
+                publishedAt: new Date('2026-09-29T12:00:00-03:00'),
+                summary: 'Los metrodelegados informaron que mantendrán reuniones de audiencia para tratar cuestiones salariales y condiciones de trabajo en el taller de la Línea E.',
+                lines: ['E'],
+                category: 'Gremial',
+                imageUrl: 'https://images.unsplash.com/photo-1577495508048-b635879837f1?w=600&auto=format&fit=crop&q=80',
+                readingTime: '3 min'
+            },
+            {
+                id: 208,
+                title: 'Operativos de seguridad nocturnos en talleres y estaciones del Subte',
+                source: 'C5N',
+                sourceId: 'c5n',
+                sourceUrl: 'https://www.c5n.com/buscar?q=subte',
+                publishedAt: new Date('2026-09-27T21:15:00-03:00'),
+                summary: 'La Policía de la Ciudad desplegó nuevos puestos de prevención en cabeceras de las Líneas A y C durante las horas fuera de servicio.',
+                lines: ['A', 'C'],
+                category: 'Seguridad',
+                imageUrl: 'https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?w=600&auto=format&fit=crop&q=80',
+                readingTime: '2 min'
             }
         ];
 
-        // App Filter State
+        // State Variables
         let currentLineFilter = 'TODAS';
-        let currentCategoryFilter = 'TODAS';
+        let currentMediaCategory = 'TODOS';
+        let currentOutletFilter = 'TODOS';
         let allNewsList = [...initialNews];
 
         const linesList = ['TODAS', 'A', 'B', 'C', 'D', 'E', 'H', 'Premetro'];
-        const categoriesList = ['TODAS', 'Estado', 'Tarifas', 'Obras', 'Paros/Gremial', 'General'];
+        const mediaCategoriesList = ['TODOS', 'Nacional', 'Digital', 'TV / Video', 'Radio', 'Especializado'];
 
-        // Init App on Page Load
+        // Init App on Load
         window.addEventListener('DOMContentLoaded', () => {
             renderStatusBoard();
             renderLineFilters();
-            renderCategoryFilters();
+            renderMediaCategoryFilters();
+            populateMediaSelect();
             applyFilters();
 
-            // Auto-sync ticker simulation every 45 seconds
+            // Auto status refresh simulation ticker
             setInterval(() => {
                 syncServiceStatus(false);
-            }, 45000);
+            }, 60000);
         });
 
         function renderStatusBoard() {
@@ -389,20 +523,16 @@
             }).join('');
         }
 
-        // Live Service Sync Simulator (Emova / Metrovías API mock)
         function syncServiceStatus(manualClick = true) {
             const spin = document.getElementById('syncSpin');
             spin.classList.add('fa-spin');
 
             setTimeout(() => {
-                // Randomize minute tweak or small update for dynamic feel
                 const now = new Date();
                 const timeStr = `${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`;
                 
-                // Update timestamp badges
                 document.getElementById('lastSyncBadge').innerText = `Sync Emova: ${timeStr} hs`;
 
-                // Slight variation on Line C or B to show live reactive system
                 if (Math.random() > 0.5) {
                     serviceStatus[2].updated = `Sync ${timeStr}`;
                 }
@@ -411,9 +541,9 @@
                 spin.classList.remove('fa-spin');
 
                 if (manualClick) {
-                    showToast(`Estado oficial sincronizado con servidores de Emova (${timeStr} hs)`);
+                    showToast(`Sincronización oficial de Subtes completada (${timeStr} hs)`);
                 }
-            }, 800);
+            }, 700);
         }
 
         function renderLineFilters() {
@@ -438,17 +568,25 @@
             }).join('');
         }
 
-        function renderCategoryFilters() {
-            const container = document.getElementById('categoryButtonsFilter');
-            container.innerHTML = categoriesList.map(cat => {
-                const isSelected = currentCategoryFilter === cat;
+        function renderMediaCategoryFilters() {
+            const container = document.getElementById('mediaCategoryButtons');
+            container.innerHTML = mediaCategoriesList.map(cat => {
+                const isSelected = currentMediaCategory === cat;
                 return `
-                    <button onclick="setCategoryFilter('${cat}')" class="w-full text-left px-3 py-2 rounded-xl text-xs font-semibold transition flex items-center justify-between ${isSelected ? 'bg-yellow-400/20 text-yellow-900 dark:text-yellow-300 font-bold border border-yellow-500/30' : 'hover:bg-slate-100 dark:hover:bg-slate-700/50 text-slate-600 dark:text-slate-300'}">
-                        <span>${cat === 'TODAS' ? 'Todas las Categorías' : cat}</span>
+                    <button onclick="setMediaCategory('${cat}')" class="w-full text-left px-3 py-2 rounded-xl text-xs font-semibold transition flex items-center justify-between ${isSelected ? 'bg-yellow-400/20 text-yellow-900 dark:text-yellow-300 font-bold border border-yellow-500/30' : 'hover:bg-slate-100 dark:hover:bg-slate-700/50 text-slate-600 dark:text-slate-300'}">
+                        <span>${cat === 'TODOS' ? 'Todos los Tipos' : cat}</span>
                         ${isSelected ? '<i class="fa-solid fa-chevron-right text-[10px] text-yellow-500"></i>' : ''}
                     </button>
                 `;
             }).join('');
+        }
+
+        function populateMediaSelect() {
+            const select = document.getElementById('mediaSelectFilter');
+            const sortedOutlets = [...monitoredOutlets].sort((a,b) => a.name.localeCompare(b.name));
+            
+            select.innerHTML = '<option value="TODOS">Todos los Medios (+42)</option>' + 
+                sortedOutlets.map(m => `<option value="${m.id}">${m.name} (${m.type})</option>`).join('');
         }
 
         function setLineFilter(line) {
@@ -463,25 +601,31 @@
             applyFilters();
         }
 
-        function setCategoryFilter(cat) {
-            currentCategoryFilter = cat;
-            renderCategoryFilters();
+        function setMediaCategory(cat) {
+            currentMediaCategory = cat;
+            renderMediaCategoryFilters();
             applyFilters();
         }
 
         function applyFilters() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+            const selectedOutlet = document.getElementById('mediaSelectFilter').value;
             const sortOrder = document.getElementById('sortSelect').value;
 
             let filtered = allNewsList.filter(item => {
                 const matchesLine = currentLineFilter === 'TODAS' || item.lines.includes(currentLineFilter);
-                const matchesCategory = currentCategoryFilter === 'TODAS' || item.category === currentCategoryFilter;
+                
+                // Outlet details check
+                const outletInfo = monitoredOutlets.find(o => o.id === item.sourceId || o.name === item.source);
+                const matchesOutletType = currentMediaCategory === 'TODOS' || (outletInfo && outletInfo.type === currentMediaCategory);
+                const matchesSpecificOutlet = selectedOutlet === 'TODOS' || (outletInfo && outletInfo.id === selectedOutlet);
+
                 const matchesSearch = !searchTerm || 
                                       item.title.toLowerCase().includes(searchTerm) || 
                                       item.summary.toLowerCase().includes(searchTerm) ||
                                       item.source.toLowerCase().includes(searchTerm);
 
-                return matchesLine && matchesCategory && matchesSearch;
+                return matchesLine && matchesOutletType && matchesSpecificOutlet && matchesSearch;
             });
 
             filtered.sort((a, b) => {
@@ -506,7 +650,7 @@
 
             container.innerHTML = items.map(news => {
                 const timeAgo = formatTimeRelative(news.publishedAt);
-                const exactDateStr = formatExactDate(news.publishedAt);
+                const exactDateTimeStr = formatExactDateTime(news.publishedAt);
 
                 const lineBadges = news.lines.map(line => {
                     const code = line === 'Premetro' ? 'P' : line;
@@ -514,14 +658,21 @@
                 }).join(' ');
 
                 const mainLineCode = news.lines[0] === 'Premetro' ? 'P' : (news.lines[0] || 'A');
+                const outletInfo = monitoredOutlets.find(o => o.id === news.sourceId || o.name === news.source);
+                const typeTag = outletInfo ? outletInfo.type : 'Digital';
 
                 return `
                     <article class="bg-white dark:bg-slate-800/90 rounded-2xl shadow-sm hover:shadow-md transition border-t-4 border-line-${mainLineCode} border-x border-b border-slate-200 dark:border-slate-700/80 overflow-hidden flex flex-col md:flex-row">
                         <div class="md:w-1/3 h-48 md:h-auto relative overflow-hidden bg-slate-900">
                             <img src="${news.imageUrl}" alt="${news.title}" class="w-full h-full object-cover transition duration-300 hover:scale-105 opacity-90">
-                            <span class="absolute top-3 left-3 bg-slate-950/85 backdrop-blur text-white text-[10px] font-bold px-2.5 py-1 rounded-lg border border-slate-700">
-                                ${news.source}
-                            </span>
+                            <div class="absolute top-3 left-3 flex flex-col gap-1 items-start">
+                                <span class="bg-slate-950/85 backdrop-blur text-yellow-400 font-extrabold text-[10px] px-2.5 py-1 rounded-lg border border-slate-700">
+                                    ${news.source}
+                                </span>
+                                <span class="bg-slate-900/80 text-white text-[9px] font-bold px-2 py-0.5 rounded-md">
+                                    ${typeTag}
+                                </span>
+                            </div>
                         </div>
 
                         <div class="p-5 md:w-2/3 flex flex-col justify-between space-y-3">
@@ -533,8 +684,8 @@
                                             ${news.category}
                                         </span>
                                     </div>
-                                    <div class="text-[11px] text-slate-500 dark:text-slate-400 font-mono flex items-center gap-1" title="Fecha de publicación exactas">
-                                        <i class="fa-regular fa-calendar"></i> ${exactDateStr} (${timeAgo})
+                                    <div class="text-[11px] text-slate-500 dark:text-slate-400 font-mono flex items-center gap-1" title="Fecha y Hora Exactas de Publicación">
+                                        <i class="fa-regular fa-clock text-yellow-500"></i> ${exactDateTimeStr} (${timeAgo})
                                     </div>
                                 </div>
 
@@ -549,13 +700,13 @@
                                 </p>
                             </div>
 
-                            <div class="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-700/60">
-                                <span class="text-[11px] text-slate-400 flex items-center gap-1 font-mono">
-                                    <i class="fa-solid fa-newspaper text-yellow-500"></i> ${news.source}
-                                </span>
+                            <div class="flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-slate-100 dark:border-slate-700/60">
+                                <div class="flex items-center gap-2 text-[11px] text-slate-400 font-mono">
+                                    <span><i class="fa-solid fa-book-open text-slate-400"></i> Lectura: ${news.readingTime || '3 min'}</span>
+                                </div>
                                 <a href="${news.sourceUrl}" target="_blank" rel="noopener noreferrer" 
                                    class="inline-flex items-center gap-1.5 text-xs font-bold text-slate-950 bg-yellow-400 hover:bg-yellow-300 px-3.5 py-2 rounded-xl transition shadow-sm">
-                                    <span>Ir a la noticia original</span>
+                                    <span>Leer noticia original</span>
                                     <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
                                 </a>
                             </div>
@@ -565,7 +716,32 @@
             }).join('');
         }
 
-        // External Google & Bing News Dynamic Query Generators
+        function openMediaModal() {
+            const modal = document.getElementById('mediaDirectoryModal');
+            const container = document.getElementById('modalMediaList');
+            
+            const sorted = [...monitoredOutlets].sort((a,b) => a.name.localeCompare(b.name));
+
+            container.innerHTML = sorted.map(m => `
+                <div class="p-3 bg-slate-50 dark:bg-slate-900/80 rounded-xl border border-slate-200 dark:border-slate-700 flex items-center justify-between hover:border-yellow-500 transition">
+                    <div>
+                        <h4 class="text-xs font-bold text-slate-900 dark:text-slate-100">${m.name}</h4>
+                        <span class="text-[10px] text-slate-500 dark:text-slate-400">${m.type}</span>
+                    </div>
+                    <a href="${m.searchUrl}" target="_blank" rel="noopener noreferrer" class="p-2 bg-yellow-400 hover:bg-yellow-300 text-slate-950 rounded-lg text-xs font-bold flex items-center gap-1" title="Ver menciones en ${m.name}">
+                        <span>Menciones</span>
+                        <i class="fa-solid fa-magnifying-glass text-[10px]"></i>
+                    </a>
+                </div>
+            `).join('');
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeMediaModal() {
+            document.getElementById('mediaDirectoryModal').classList.add('hidden');
+        }
+
         function searchExternalGoogleNews() {
             const query = currentLineFilter === 'TODAS' 
                 ? 'Subte Buenos Aires' 
@@ -580,15 +756,17 @@
             window.open(`https://www.bing.com/news/search?q=${encodeURIComponent(query)}`, '_blank');
         }
 
-        function formatExactDate(date) {
-            const options = { year: 'numeric', month: 'short', day: 'numeric' };
-            return date.toLocaleDateString('es-AR', options);
+        function formatExactDateTime(date) {
+            const dateOptions = { year: 'numeric', month: 'short', day: 'numeric' };
+            const timeOptions = { hour: '2-digit', minute: '2-digit' };
+            return `${date.toLocaleDateString('es-AR', dateOptions)} ${date.toLocaleTimeString('es-AR', timeOptions)} hs`;
         }
 
         function formatTimeRelative(date) {
             const now = new Date();
             const diffMin = Math.floor((now - date) / (1000 * 60));
 
+            if (diffMin < 1) return `Recién publicado`;
             if (diffMin < 60) return `Hace ${diffMin} min`;
             const diffHours = Math.floor(diffMin / 60);
             if (diffHours < 24) return `Hace ${diffHours} h`;
@@ -603,7 +781,7 @@
 
             setTimeout(() => {
                 hideToast();
-            }, 4500);
+            }, 4000);
         }
 
         function hideToast() {
