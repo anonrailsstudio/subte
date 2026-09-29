@@ -3,16 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Directorio Global de Cabviews / Frontviews de Metro y Trenes</title>
+  <title>Directorio Global Extendido de Cabviews & Metros del Mundo</title>
   <style>
     :root {
-      --bg-color: #0f172a;
-      --card-bg: #1e293b;
-      --text-color: #f8fafc;
+      --bg-color: #0b0f19;
+      --card-bg: #151d2a;
+      --text-color: #f1f5f9;
       --accent-color: #38bdf8;
       --accent-hover: #0284c7;
       --muted-text: #94a3b8;
-      --border-color: #334155;
+      --border-color: #243144;
+      --input-bg: #1e293b;
     }
 
     * {
@@ -22,25 +23,25 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background-color: var(--bg-color);
       color: var(--text-color);
-      line-height: 1.6;
+      line-height: 1.5;
       padding: 2rem 1rem;
     }
 
     .container {
-      max-width: 1200px;
+      max-width: 1300px;
       margin: 0 auto;
     }
 
     header {
       text-align: center;
-      margin-bottom: 2.5rem;
+      margin-bottom: 2rem;
     }
 
     header h1 {
-      font-size: 2.2rem;
+      font-size: 2.3rem;
       color: var(--accent-color);
       margin-bottom: 0.5rem;
     }
@@ -50,20 +51,38 @@
       font-size: 1.1rem;
     }
 
+    .search-box {
+      margin: 2rem auto 2.5rem auto;
+      max-width: 600px;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 1rem 1.25rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      background-color: var(--input-bg);
+      color: var(--text-color);
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    .search-input:focus {
+      border-color: var(--accent-color);
+    }
+
     .region-title {
-      font-size: 1.6rem;
+      font-size: 1.5rem;
       border-bottom: 2px solid var(--border-color);
       padding-bottom: 0.5rem;
-      margin: 2.5rem 0 1.5rem 0;
+      margin: 2.5rem 0 1.25rem 0;
       color: #e2e8f0;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
     }
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 1.25rem;
     }
 
@@ -83,10 +102,6 @@
       border-color: var(--accent-color);
     }
 
-    .card-header {
-      margin-bottom: 0.75rem;
-    }
-
     .card-tag {
       display: inline-block;
       font-size: 0.75rem;
@@ -96,17 +111,18 @@
       color: var(--accent-color);
       padding: 0.2rem 0.5rem;
       border-radius: 4px;
-      margin-bottom: 0.4rem;
+      margin-bottom: 0.5rem;
     }
 
     .card-title {
-      font-size: 1.15rem;
+      font-size: 1.1rem;
       font-weight: 600;
       color: #ffffff;
+      margin-bottom: 0.4rem;
     }
 
     .card-details {
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       color: var(--muted-text);
       margin-bottom: 1.25rem;
     }
@@ -115,19 +131,24 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 0.5rem;
+      gap: 0.4rem;
       background-color: var(--accent-color);
       color: #0f172a;
       text-decoration: none;
       font-weight: 600;
-      padding: 0.6rem 1rem;
+      padding: 0.55rem 1rem;
       border-radius: 6px;
-      transition: background-color 0.2s ease;
+      transition: background-color 0.2s ease, color 0.2s ease;
+      font-size: 0.9rem;
     }
 
     .btn-link:hover {
       background-color: var(--accent-hover);
       color: #ffffff;
+    }
+
+    .hidden {
+      display: none !important;
     }
 
     footer {
@@ -144,149 +165,257 @@
 
   <div class="container">
     <header>
-      <h1>🚊 Colección Global de Cabrides & Metros</h1>
-      <p>Explora recorridos completos desde la vista frontal/cabina del conductor alrededor del mundo.</p>
+      <h1>🚊 Directori Global de Cabviews y Trenes</h1>
+      <p>Explora recorridos en vista frontal (Cab Ride / Front View) organizados por continentes y países.</p>
     </header>
 
-    <main>
-      <!-- AMÉRICA DEL SUR -->
-      <h2 class="region-title">🌎 América del Sur</h2>
+    <div class="search-box">
+      <input type="text" id="searchInput" class="search-input" placeholder="🔍 Buscar por país, ciudad, línea o sistema (ej: Roma, Tokyo, Línea A, Shinkansen)...">
+    </div>
+
+    <main id="content">
+
+      <!-- AMÉRICA DEL SUR & CENTRAL -->
+      <h2 class="region-title">🌎 América del Sur y Central</h2>
       <div class="grid">
-        <div class="card">
+        <div class="card" data-search="argentina buenos aires subte linea a mitre roca">
           <div>
             <span class="card-tag">Argentina • Buenos Aires</span>
             <h3 class="card-title">Subte - Línea A</h3>
-            <p class="card-details">Recorrido completo: Plaza de Mayo ↔ San Pedrito.</p>
+            <p class="card-details">Plaza de Mayo ↔ San Pedrito (Recorrido histórico y subterráneo).</p>
           </div>
-          <a href="https://www.youtube.com/results?search_query=Subte+Buenos+Aires+Linea+A+cabview" target="_blank" class="btn-link">Ver Video ↗</a>
+          <a href="https://www.youtube.com/results?search_query=Subte+Buenos+Aires+Linea+A+cabview" target="_blank" class="btn-link">Ver en YouTube ↗</a>
         </div>
 
-        <div class="card">
+        <div class="card" data-search="argentina buenos aires linea mitre tigre">
+          <div>
+            <span class="card-tag">Argentina • Buenos Aires</span>
+            <h3 class="card-title">Tren Mitre - Ramal Tigre</h3>
+            <p class="card-details">Retiro ↔ Tigre (Cabview de la red metropolitana).</p>
+          </div>
+          <a href="https://www.youtube.com/results?search_query=Tren+Mitre+Ramal+Tigre+cabview" target="_blank" class="btn-link">Ver en YouTube ↗</a>
+        </div>
+
+        <div class="card" data-search="chile santiago metro linea 1 3 6">
           <div>
             <span class="card-tag">Chile • Santiago</span>
-            <h3 class="card-title">Metro de Santiago - Línea 1</h3>
-            <p class="card-details">Recorrido completo: San Pablo ↔ Los Dominicos.</p>
+            <h3 class="card-title">Metro de Santiago - Línea 6</h3>
+            <p class="card-details">Cerrillos ↔ Los Leones (Línea automática driverless).</p>
           </div>
-          <a href="https://www.youtube.com/results?search_query=Metro+de+Santiago+Linea+1+cabview" target="_blank" class="btn-link">Ver Video ↗</a>
+          <a href="https://www.youtube.com/results?search_query=Metro+de+Santiago+Linea+6+cabview" target="_blank" class="btn-link">Ver en YouTube ↗</a>
         </div>
 
-        <div class="card">
+        <div class="card" data-search="brasil sao paulo metro linha 4 amarela 2 verde">
           <div>
             <span class="card-tag">Brasil • São Paulo</span>
             <h3 class="card-title">Metrô SP - Linha 4 (Amarela)</h3>
-            <p class="card-details">Línea automatizada (Driverless), vista frontal completa.</p>
+            <p class="card-details">Vila Sônia ↔ Luz (Vista frontal limpia en sistema GoA4).</p>
           </div>
-          <a href="https://www.youtube.com/results?search_query=Metro+Sao+Paulo+Linha+4+cabview" target="_blank" class="btn-link">Ver Video ↗</a>
+          <a href="https://www.youtube.com/results?search_query=Metro+Sao+Paulo+Linha+4+cabview" target="_blank" class="btn-link">Ver en YouTube ↗</a>
+        </div>
+
+        <div class="card" data-search="medellin colombia metro linea a">
+          <div>
+            <span class="card-tag">Colombia • Medellín</span>
+            <h3 class="card-title">Metro de Medellín - Línea A</h3>
+            <p class="card-details">Niquía ↔ La Estrella (Recorrido completo en superficie).</p>
+          </div>
+          <a href="https://www.youtube.com/results?search_query=Metro+de+Medellin+Linea+A+cabview" target="_blank" class="btn-link">Ver en YouTube ↗</a>
+        </div>
+
+        <div class="card" data-search="panama metro linea 1">
+          <div>
+            <span class="card-tag">Panamá • Ciudad de Panamá</span>
+            <h3 class="card-title">Metro de Panamá - Línea 1</h3>
+            <p class="card-details">Albrook ↔ San Isidro (Túnel y viaducto elevado).</p>
+          </div>
+          <a href="https://www.youtube.com/results?search_query=Metro+de+Panama+Linea+1+cabview" target="_blank" class="btn-link">Ver en YouTube ↗</a>
         </div>
       </div>
 
       <!-- AMÉRICA DEL NORTE -->
       <h2 class="region-title">🌎 América del Norte</h2>
       <div class="grid">
-        <div class="card">
+        <div class="card" data-search="eeuu usa new york nyc subway line 7 a line">
           <div>
-            <span class="card-tag">Estados Unidos • Nueva York</span>
-            <h3 class="card-title">NYC Subway - Line 7 Express</h3>
-            <p class="card-details">Flushing ↔ 34 St-Hudson Yards (Front view/Cabview).</p>
+            <span class="card-tag">EE. UU. • Nueva York</span>
+            <h3 class="card-title">NYC Subway - Line A (Express)</h3>
+            <p class="card-details">Vista frontal desde ventana pública R32 a 207th St.</p>
           </div>
-          <a href="https://www.youtube.com/results?search_query=NYC+Subway+Line+7+front+window+cabview" target="_blank" class="btn-link">Ver Video ↗</a>
+          <a href="https://www.youtube.com/watch?v=pphgq49lslI" target="_blank" class="btn-link">Ver Video Directo ↗</a>
         </div>
 
-        <div class="card">
+        <div class="card" data-search="eeuu usa los angeles la metro line d purple line cab view">
+          <div>
+            <span class="card-tag">EE. UU. • Los Ángeles</span>
+            <h3 class="card-title">LA Metro - D Line (Purple Line)</h3>
+            <p class="card-details">Union Station ↔ Wilshire/Western (Cabview subterráneo).</p>
+          </div>
+          <a href="https://www.youtube.com/watch?v=6vmLf-rzwrU" target="_blank" class="btn-link">Ver Video Directo ↗</a>
+        </div>
+
+        <div class="card" data-search="mexico cdmx metro linea 1 9 12">
           <div>
             <span class="card-tag">México • Ciudad de México</span>
             <h3 class="card-title">Metro CDMX - Línea 1</h3>
-            <p class="card-details">Recorrido histórico / modernizado desde cabina.</p>
+            <p class="card-details">Observatorio ↔ Pantitlán (Cabview del tren neumático).</p>
           </div>
-          <a href="https://www.youtube.com/results?search_query=Metro+CDMX+Linea+1+cabview" target="_blank" class="btn-link">Ver Video ↗</a>
+          <a href="https://www.youtube.com/results?search_query=Metro+CDMX+Linea+1+cabview" target="_blank" class="btn-link">Ver en YouTube ↗</a>
         </div>
 
-        <div class="card">
+        <div class="card" data-search="canada montreal rem automatise light rail">
           <div>
-            <span class="card-tag">Canadá • Toronto</span>
-            <h3 class="card-title">TTC - Line 1 Yonge-University</h3>
-            <p class="card-details">Finch ↔ Vaughan Metropolitan Centre.</p>
+            <span class="card-tag">Canadá • Montreal</span>
+            <h3 class="card-title">REM Montreal (Réseau express métropolitain)</h3>
+            <p class="card-details">Brossard ↔ Gare Centrale (Línea automática panorámica).</p>
           </div>
-          <a href="https://www.youtube.com/results?search_query=Toronto+TTC+Line+1+cabview" target="_blank" class="btn-link">Ver Video ↗</a>
+          <a href="https://www.youtube.com/results?search_query=REM+Montreal+front+view+cabview" target="_blank" class="btn-link">Ver en YouTube ↗</a>
         </div>
       </div>
 
       <!-- EUROPA -->
       <h2 class="region-title">🌍 Europa</h2>
       <div class="grid">
-        <div class="card">
+        <div class="card" data-search="italia roma rome metro line c 4k cabview">
+          <div>
+            <span class="card-tag">Italia • Roma</span>
+            <h3 class="card-title">Metro di Roma - Linea C</h3>
+            <p class="card-details">San Giovanni ↔ Monte Compatri/Pantano en 4K.</p>
+          </div>
+          <a href="https://www.youtube.com/watch?v=AShPQL6AiBM" target="_blank" class="btn-link">Ver Video Directo ↗</a>
+        </div>
+
+        <div class="card" data-search="paises bajos holanda rotterdam hague htm metro line 9 tram">
+          <div>
+            <span class="card-tag">Países Bajos • La Haya / Rotterdam</span>
+            <h3 class="card-title">HTM Tram Line 9 / Metro Rotterdam</h3>
+            <p class="card-details">Cabview bajo la lluvia / Línea A de Rotterdam.</p>
+          </div>
+          <a href="https://www.youtube.com/watch?v=7NkALt2dtlM" target="_blank" class="btn-link">Ver Video Directo ↗</a>
+        </div>
+
+        <div class="card" data-search="reino unido londres london underground elizabeth line victoria">
           <div>
             <span class="card-tag">Reino Unido • Londres</span>
             <h3 class="card-title">London Underground - Elizabeth Line</h3>
-            <p class="card-details">Vista completa de la sección subterránea moderna.</p>
+            <p class="card-details">Paddington ↔ Abbey Wood (Cabview por los túneles Crossrail).</p>
           </div>
-          <a href="https://www.youtube.com/results?search_query=London+Underground+Elizabeth+Line+cabview" target="_blank" class="btn-link">Ver Video ↗</a>
+          <a href="https://www.youtube.com/results?search_query=London+Underground+Elizabeth+Line+cabview" target="_blank" class="btn-link">Ver en YouTube ↗</a>
         </div>
 
-        <div class="card">
+        <div class="card" data-search="francia paris metro ligne 14 tgv saverne">
           <div>
             <span class="card-tag">Francia • París</span>
             <h3 class="card-title">Métro de Paris - Ligne 14</h3>
-            <p class="card-details">Línea automática a alta velocidad con vista frontal limpia.</p>
+            <p class="card-details">Mairie de Saint-Ouen ↔ Aéroport d'Orly (Vista sin conductor).</p>
           </div>
-          <a href="https://www.youtube.com/results?search_query=Metro+Paris+Ligne+14+cabview" target="_blank" class="btn-link">Ver Video ↗</a>
+          <a href="https://www.youtube.com/results?search_query=Metro+Paris+Ligne+14+cabview" target="_blank" class="btn-link">Ver en YouTube ↗</a>
         </div>
 
-        <div class="card">
+        <div class="card" data-search="españa madrid barcelona metro linea 10 L9">
           <div>
-            <span class="card-tag">España • Madrid</span>
-            <h3 class="card-title">Metro de Madrid - Línea 10</h3>
-            <p class="card-details">Hospital Infanta Sofía ↔ Puerta del Sur.</p>
+            <span class="card-tag">España • Barcelona</span>
+            <h3 class="card-title">Metro de Barcelona - L9 Sud</h3>
+            <p class="card-details">Aeroport T1 ↔ Zona Universitària (Vista frontal automática).</p>
           </div>
-          <a href="https://www.youtube.com/results?search_query=Metro+de+Madrid+Linea+10+cabview" target="_blank" class="btn-link">Ver Video ↗</a>
+          <a href="https://www.youtube.com/results?search_query=Metro+Barcelona+L9+Sud+cabview" target="_blank" class="btn-link">Ver en YouTube ↗</a>
         </div>
 
-        <div class="card">
+        <div class="card" data-search="alemania berlin u-bahn u5 munich">
           <div>
             <span class="card-tag">Alemania • Berlín</span>
-            <h3 class="card-title">U-Bahn Berlin - U5</h3>
-            <p class="card-details">Hauptbahnhof ↔ Hönow (Túneles y tramos de superficie).</p>
+            <h3 class="card-title">U-Bahn Berlin - Línea U5</h3>
+            <p class="card-details">Hauptbahnhof ↔ Hönow (Cabview por el centro de Berlín).</p>
           </div>
-          <a href="https://www.youtube.com/results?search_query=Berlin+U-Bahn+U5+cabview" target="_blank" class="btn-link">Ver Video ↗</a>
+          <a href="https://www.youtube.com/results?search_query=Berlin+U-Bahn+U5+cabview" target="_blank" class="btn-link">Ver en YouTube ↗</a>
+        </div>
+
+        <div class="card" data-search="rusia moscou moscow metro circular line 5">
+          <div>
+            <span class="card-tag">Rusia • Moscú</span>
+            <h3 class="card-title">Moscow Metro - Line 5 (Koltsevaya)</h3>
+            <p class="card-details">Línea circular histórica y arquitectura subterránea.</p>
+          </div>
+          <a href="https://www.youtube.com/results?search_query=Moscow+Metro+Line+5+cabview" target="_blank" class="btn-link">Ver en YouTube ↗</a>
         </div>
       </div>
 
-      <!-- ASIA -->
-      <h2 class="region-title">🌏 Asia</h2>
+      <!-- ASIA & MEDIO ORIENTE -->
+      <h2 class="region-title">🌏 Asia y Medio Oriente</h2>
       <div class="grid">
-        <div class="card">
+        <div class="card" data-search="china shanghai metro line 10 front window view">
           <div>
-            <span class="card-tag">Japón • Tokio</span>
-            <h3 class="card-title">Yamanote Line (JR East)</h3>
-            <p class="card-details">Circuito cerrado completo alrededor del centro de Tokio.</p>
+            <span class="card-tag">China • Shanghái</span>
+            <h3 class="card-title">Shanghai Metro - Line 10</h3>
+            <p class="card-details">Jilong Road ↔ Hongqiao Railway Station.</p>
           </div>
-          <a href="https://www.youtube.com/results?search_query=Yamanote+line+cabview+full+loop" target="_blank" class="btn-link">Ver Video ↗</a>
+          <a href="https://www.youtube.com/watch?fUhDCf6hCVE" target="_blank" class="btn-link">Ver Video Directo ↗</a>
         </div>
 
-        <div class="card">
+        <div class="card" data-search="japon tokio tokyo yamanote line ginza yurakucho shinkansen">
           <div>
             <span class="card-tag">Japón • Tokio</span>
-            <h3 class="card-title">Tokyo Metro - Ginza Line</h3>
-            <p class="card-details">La línea de metro más antigua de Asia (Shibuya ↔ Asakusa).</p>
+            <h3 class="card-title">JR Yamanote Line</h3>
+            <p class="card-details">Circuito cerrado completo alrededor del corazón de Tokio (Cabview 4K).</p>
           </div>
-          <a href="https://www.youtube.com/results?search_query=Tokyo+Metro+Ginza+Line+cabview" target="_blank" class="btn-link">Ver Video ↗</a>
+          <a href="https://www.youtube.com/results?search_query=Yamanote+line+cabview+full+loop+4k" target="_blank" class="btn-link">Ver en YouTube ↗</a>
         </div>
 
-        <div class="card">
+        <div class="card" data-search="corea del sur seul seoul subway line 2 shinbundang">
           <div>
             <span class="card-tag">Corea del Sur • Seúl</span>
-            <h3 class="card-title">Seoul Subway - Line 2</h3>
-            <p class="card-details">Línea circular completa que cruza el río Han.</p>
+            <h3 class="card-title">Shinbundang Line (DX Line)</h3>
+            <p class="card-details">Sinsa ↔ Gwanggyo (Metro subterráneo de alta velocidad automatizado).</p>
           </div>
-          <a href="https://www.youtube.com/results?search_query=Seoul+Subway+Line+2+cabview" target="_blank" class="btn-link">Ver Video ↗</a>
+          <a href="https://www.youtube.com/results?search_query=Shinbundang+line+cabview" target="_blank" class="btn-link">Ver en YouTube ↗</a>
+        </div>
+
+        <div class="card" data-search="emiratos arabes dubai metro red line driverless">
+          <div>
+            <span class="card-tag">Emiratos Árabes • Dubái</span>
+            <h3 class="card-title">Dubai Metro - Red Line</h3>
+            <p class="card-details">Centrepoint ↔ Expo 2020 (Línea automática elevada con vistas a rascacielos).</p>
+          </div>
+          <a href="https://www.youtube.com/results?search_query=Dubai+Metro+Red+Line+cabview" target="_blank" class="btn-link">Ver en YouTube ↗</a>
+        </div>
+
+        <div class="card" data-search="qatar doha metro red line gold line">
+          <div>
+            <span class="card-tag">Catar • Doha</span>
+            <h3 class="card-title">Doha Metro - Red Line</h3>
+            <p class="card-details">Lusail ↔ Al Wakra (Red de alta tecnología sin conductor).</p>
+          </div>
+          <a href="https://www.youtube.com/results?search_query=Doha+Metro+Red+Line+cabview" target="_blank" class="btn-link">Ver en YouTube ↗</a>
         </div>
       </div>
+
     </main>
 
     <footer>
-      <p>Directorio de videos de vista frontal (Cabview / Front Window View) de sistemas ferroviarios globales.</p>
+      <p>Directorio Global de Recorridos Ferroviarios en Cabview.</p>
     </footer>
   </div>
 
+  <script>
+    // Buscador interactivo en tiempo real
+    const searchInput = document.getElementById('searchInput');
+    const cards = document.querySelectorAll('.card');
+
+    searchInput.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase().trim();
+
+      cards.forEach(card => {
+        const searchText = card.getAttribute('data-search').toLowerCase();
+        const cardTitle = card.querySelector('.card-title').textContent.toLowerCase();
+        const cardDetails = card.querySelector('.card-details').textContent.toLowerCase();
+
+        if (searchText.includes(query) || cardTitle.includes(query) || cardDetails.includes(query)) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+    });
+  </script>
 </body>
 </html>
