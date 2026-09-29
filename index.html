@@ -1,1 +1,1248 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WorldMetro News Portal - Portal Global de Noticias de Transporte Subterráneo</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        metro: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#0284c7',
+                            600: '#0369a1',
+                            700: '#075985',
+                            800: '#0c4a6e',
+                            900: '#082f49',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Custom scrollbars */
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(156, 163, 175, 0.4); border-radius: 9999px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(156, 163, 175, 0.7); }
+        .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    </style>
+</head>
+<body class="h-full bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 font-sans flex flex-col antialiased transition-colors duration-200">
 
+    <!-- Top Header Navigation -->
+    <header class="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-30 shadow-sm transition-colors">
+        <div class="px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <button id="toggle-sidebar-btn" class="lg:hidden p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 focus:outline-none">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+                <div class="flex items-center space-x-3 cursor-pointer" id="logo-home-btn">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-700 via-indigo-600 to-sky-500 flex items-center justify-center text-white font-black text-xl shadow-md">
+                        <i class="fa-solid fa-train-subway"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-black text-lg leading-none tracking-tight text-slate-900 dark:text-white flex items-center gap-1.5">
+                            WORLD<span class="text-blue-600 dark:text-blue-400">METRO</span> NEWS
+                        </h1>
+                        <p class="text-[10px] text-slate-500 dark:text-slate-400 font-extrabold tracking-widest uppercase">Portal Oficial de Transporte Masivo</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Global Search Bar in Header -->
+            <div class="hidden md:flex items-center flex-1 max-w-lg mx-8 relative">
+                <i class="fa-solid fa-magnifying-glass absolute left-3.5 text-slate-400 text-xs"></i>
+                <input type="text" id="global-search" placeholder="Buscar en +160 metros, ciudades, países o palabras clave..." class="w-full pl-9 pr-9 py-2 text-xs bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:border-blue-500 rounded-xl focus:outline-none dark:text-white transition-all shadow-inner">
+                <button id="clear-global-search" class="hidden absolute right-3 text-slate-400 hover:text-slate-600 text-xs">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="flex items-center space-x-2 sm:space-x-3">
+                <span class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800 text-[11px] font-bold text-blue-700 dark:text-blue-300">
+                    <i class="fa-solid fa-globe text-xs"></i>
+                    <span id="header-metro-count">160+ Redes</span>
+                </span>
+
+                <!-- Theme Toggle -->
+                <button id="theme-toggle" class="p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition-colors">
+                    <i id="theme-toggle-dark-icon" class="fa-solid fa-moon text-lg hidden"></i>
+                    <i id="theme-toggle-light-icon" class="fa-solid fa-sun text-lg text-amber-400"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Search Bar -->
+        <div class="md:hidden px-4 pb-3 pt-1 border-t border-slate-100 dark:border-slate-800">
+            <div class="relative">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
+                <input type="text" id="global-search-mobile" placeholder="Buscar metros, noticias o países..." class="w-full pl-9 pr-8 py-1.5 text-xs bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none dark:text-white">
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Body Container -->
+    <div class="flex flex-1 overflow-hidden relative">
+
+        <!-- Sidebar Navigation (Left Panel) -->
+        <aside id="sidebar" class="fixed lg:static inset-y-0 left-0 z-20 w-80 sm:w-84 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out flex flex-col h-[calc(100vh-61px)] shadow-lg lg:shadow-none">
+            
+            <!-- Sidebar Header / Filter -->
+            <div class="p-3.5 border-b border-slate-200 dark:border-slate-700 space-y-2.5">
+                <!-- Feed Global Button -->
+                <button id="btn-all-metros" class="w-full flex items-center justify-between p-2.5 rounded-xl bg-gradient-to-r from-blue-700 via-indigo-700 to-sky-600 text-white font-bold text-xs shadow-md hover:opacity-95 transition-all">
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-earth-americas text-sm"></i>
+                        <span>TODAS LAS NOTICIAS (GLOBAL)</span>
+                    </div>
+                    <span id="total-global-count" class="bg-white/20 px-2 py-0.5 rounded-full text-[10px] font-black">0</span>
+                </button>
+
+                <!-- Sidebar search filter -->
+                <div class="relative">
+                    <i class="fa-solid fa-filter absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                    <input type="text" id="sidebar-metro-search" placeholder="Filtrar metros por país o ciudad..." class="w-full pl-8 pr-7 py-1.5 text-xs bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none dark:text-white">
+                </div>
+            </div>
+
+            <!-- List of Metros (Organized by Continent & Country) -->
+            <div id="metro-sidebar-tree" class="flex-1 overflow-y-auto p-3 space-y-4">
+                <!-- Populated dynamically with full 160+ metros hierarchy -->
+            </div>
+
+            <div class="p-3 border-t border-slate-200 dark:border-slate-700 text-[10px] text-center text-slate-400 font-medium">
+                <span>WorldMetro News &bull; 160+ Redes Integradas</span>
+            </div>
+        </aside>
+
+        <!-- Sidebar Mobile Overlay -->
+        <div id="sidebar-overlay" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-10 hidden lg:hidden"></div>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 overflow-y-auto bg-slate-100 dark:bg-slate-900/60 p-4 sm:p-6 flex flex-col space-y-5">
+            
+            <!-- Hero / Active Metro Status Header -->
+            <div id="active-metro-hero" class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-700/80 overflow-hidden transition-all">
+                <!-- Rendered dynamically -->
+            </div>
+
+            <!-- Filter Control Bar -->
+            <div class="bg-white dark:bg-slate-800 p-3.5 rounded-2xl border border-slate-200/80 dark:border-slate-700/80 shadow-sm space-y-3">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-layer-group text-blue-500 text-sm"></i>
+                        <span class="text-xs font-bold text-slate-700 dark:text-slate-200">Categoría:</span>
+                    </div>
+
+                    <div class="text-xs text-slate-500 dark:text-slate-400 font-medium flex items-center gap-1.5">
+                        <span id="showing-count-badge" class="px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 font-bold">0</span>
+                        <span>artículos visibles</span>
+                    </div>
+                </div>
+
+                <!-- Category Pills -->
+                <div class="flex items-center gap-1.5 flex-wrap" id="category-filters">
+                    <button data-category="all" class="cat-btn px-3 py-1.5 text-xs font-bold rounded-xl bg-blue-600 text-white shadow-sm transition-all">
+                        Todas
+                    </button>
+                    <button data-category="Infraestructura" class="cat-btn px-3 py-1.5 text-xs font-semibold rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 transition-all">
+                        Infraestructura
+                    </button>
+                    <button data-category="Innovación" class="cat-btn px-3 py-1.5 text-xs font-semibold rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 transition-all">
+                        Innovación & CBTC
+                    </button>
+                    <button data-category="Flota" class="cat-btn px-3 py-1.5 text-xs font-semibold rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 transition-all">
+                        Flota de Trenes
+                    </button>
+                    <button data-category="Servicio" class="cat-btn px-3 py-1.5 text-xs font-semibold rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 transition-all">
+                        Servicio & Operaciones
+                    </button>
+                    <button data-category="Tarifas" class="cat-btn px-3 py-1.5 text-xs font-semibold rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 transition-all">
+                        Tarifas & Pago Smart
+                    </button>
+                </div>
+            </div>
+
+            <!-- News Cards Grid -->
+            <div id="news-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                <!-- Articles dynamically generated -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="empty-state" class="hidden flex-1 flex flex-col items-center justify-center py-16 text-center">
+                <div class="w-16 h-16 bg-slate-200 dark:bg-slate-800 text-slate-400 rounded-full flex items-center justify-center text-2xl mb-3">
+                    <i class="fa-solid fa-newspaper"></i>
+                </div>
+                <h3 class="text-base font-bold text-slate-700 dark:text-slate-300 mb-1">No se encontraron noticias con estos parámetros</h3>
+                <p class="text-xs text-slate-500 max-w-sm">Intenta borrar el filtro de búsqueda o seleccionar otra red de metro de la barra lateral.</p>
+            </div>
+
+            <!-- Infinite Accumulative "Load More" Button -->
+            <div id="load-more-container" class="pt-2 text-center pb-8">
+                <button id="load-more-btn" class="px-6 py-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-blue-500 dark:hover:border-blue-500 text-slate-700 dark:text-slate-200 font-bold text-xs shadow-sm transition-all flex items-center space-x-2 mx-auto hover:shadow-md">
+                    <i class="fa-solid fa-rotate-right text-blue-500"></i>
+                    <span>Cargar más noticias históricas y de última hora</span>
+                </button>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Article Full Reader Modal -->
+    <div id="article-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-900/60 backdrop-blur-md hidden transition-opacity opacity-0">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 max-w-3xl w-full max-h-[90vh] flex flex-col overflow-hidden transform scale-95 transition-transform duration-200">
+            
+            <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between bg-slate-50 dark:bg-slate-800/80">
+                <div class="flex items-center space-x-2">
+                    <span id="modal-flag" class="text-lg"></span>
+                    <span id="modal-portal" class="text-xs font-bold text-blue-600 dark:text-blue-400">
+                        Portal de Noticias
+                    </span>
+                    <span id="modal-category" class="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-300">
+                        Categoría
+                    </span>
+                </div>
+                <button id="close-modal" class="w-8 h-8 flex items-center justify-center rounded-full text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <div class="p-6 overflow-y-auto space-y-4">
+                <h2 id="modal-title" class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white leading-tight">
+                    Título de la noticia
+                </h2>
+
+                <div class="flex flex-wrap items-center justify-between text-xs text-slate-500 dark:text-slate-400 gap-2 pb-3 border-b border-slate-100 dark:border-slate-700">
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-regular fa-calendar-check"></i>
+                        <span id="modal-date">Fecha</span>
+                        <span>&bull;</span>
+                        <span id="modal-metro" class="font-bold text-slate-700 dark:text-slate-300">Metro</span>
+                    </div>
+                </div>
+
+                <div class="relative rounded-xl overflow-hidden shadow-md max-h-80 bg-slate-200 dark:bg-slate-700">
+                    <img id="modal-image" src="" alt="Noticia Metro" class="w-full h-full object-cover">
+                </div>
+
+                <div id="modal-body" class="prose dark:prose-invert max-w-none text-slate-700 dark:text-slate-300 text-sm leading-relaxed space-y-4">
+                    <!-- Article text -->
+                </div>
+            </div>
+
+            <div class="px-6 py-4 border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <a id="modal-official-link" href="#" target="_blank" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition-all flex items-center justify-center space-x-2 shadow-md">
+                    <span>Ir a la página a leer la noticia</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                </a>
+                <button id="close-modal-btn" class="w-full sm:w-auto px-5 py-2.5 text-xs font-bold rounded-xl bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-300 transition-colors">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* COMPLETE DATASET OF 160+ METROS ORGANIZED BY CONTINENT AND COUNTRY */
+        const metroDataHierarchy = [
+            {
+                continent: "América del Sur",
+                countries: [
+                    {
+                        country: "Argentina", flag: "🇦🇷",
+                        metros: [{ id: "subte_ba", name: "Subte de Buenos Aires", portal: "Portal de Noticias Subte BA" }]
+                    },
+                    {
+                        country: "Brasil", flag: "🇧🇷",
+                        metros: [
+                            { id: "metro_bh", name: "Metro de Belo Horizonte", portal: "Metrô BH Notícias" },
+                            { id: "metro_bsb", name: "Metro de Brasilia", portal: "Metrô-DF Imprensa" },
+                            { id: "metro_for", name: "Metro de Fortaleza", portal: "Metrofor Notícias" },
+                            { id: "trensurb", name: "Trensurb", portal: "Trensurb Noticias" },
+                            { id: "metro_rec", name: "Metro de Recife", portal: "CBTU Recife Prensa" },
+                            { id: "metro_rio", name: "MetrôRio", portal: "MetrôRio Informa" },
+                            { id: "metro_salvador", name: "Metro de Salvador", portal: "CCR Metrô Bahia Prensa" },
+                            { id: "metro_sp", name: "Metro de São Paulo", portal: "Portal Metrô SP" }
+                        ]
+                    },
+                    {
+                        country: "Chile", flag: "🇨🇱",
+                        metros: [{ id: "metro_stgo", name: "Metro de Santiago", portal: "Metro de Santiago Prensa" }]
+                    },
+                    {
+                        country: "Colombia", flag: "🇨🇴",
+                        metros: [{ id: "metro_med", name: "Metro de Medellín", portal: "Metro de Medellín Noticias" }]
+                    },
+                    {
+                        country: "Ecuador", flag: "🇪🇨",
+                        metros: [{ id: "metro_quito", name: "Metro de Quito", portal: "Boletines Metro de Quito" }]
+                    },
+                    {
+                        country: "Perú", flag: "🇵🇪",
+                        metros: [{ id: "metro_lima", name: "Metro de Lima", portal: "Metro de Lima & Callao Informa" }]
+                    },
+                    {
+                        country: "Venezuela", flag: "🇻🇪",
+                        metros: [
+                            { id: "metro_ccs", name: "Metro de Caracas", portal: "Noticias Metro de Caracas" },
+                            { id: "metro_teques", name: "Metro de Los Teques", portal: "Metro Los Teques Prensa" },
+                            { id: "metro_mcbo", name: "Metro de Maracaibo", portal: "Metro de Maracaibo Noticias" },
+                            { id: "metro_val", name: "Metro de Valencia", portal: "Metro de Valencia Boletín" }
+                        ]
+                    }
+                ]
+            },
+            {
+                continent: "América del Norte y Central / Caribe",
+                countries: [
+                    {
+                        country: "México", flag: "🇲🇽",
+                        metros: [
+                            { id: "metro_cdmx", name: "Metro de Ciudad de México", portal: "Gaceta STC Metro CDMX" },
+                            { id: "siteur_gdl", name: "Tren Eléctrico Urbano de Guadalajara", portal: "SITEUR Jalisco Noticias" },
+                            { id: "metrorrey", name: "Metrorrey", portal: "Metrorrey Nuevo León" }
+                        ]
+                    },
+                    {
+                        country: "Canadá", flag: "🇨🇦",
+                        metros: [
+                            { id: "metro_mtl", name: "Metro de Montreal", portal: "STM Montréal Nouvelles" },
+                            { id: "ttc_toronto", name: "Toronto Subway", portal: "TTC Newsroom Toronto" },
+                            { id: "skytrain_van", name: "SkyTrain", portal: "TransLink SkyTrain Press" }
+                        ]
+                    },
+                    {
+                        country: "Estados Unidos", flag: "🇺🇸",
+                        metros: [
+                            { id: "mta_nyc", name: "New York City Subway", portal: "MTA Press Release NYC" },
+                            { id: "wmata_dc", name: "Washington Metro", portal: "WMATA Metro News DC" },
+                            { id: "mbta_boston", name: "MBTA Subway", portal: "MBTA Transit News Boston" },
+                            { id: "cta_chicago", name: "Chicago 'L'", portal: "CTA Chicago News" },
+                            { id: "la_metro", name: "Los Angeles Metro Rail", portal: "LA Metro Source" },
+                            { id: "muni_sf", name: "Muni Metro", portal: "SFMTA Muni News" },
+                            { id: "bart_sf", name: "BART", portal: "BART News SF" },
+                            { id: "septa_philly", name: "SEPTA Metro", portal: "SEPTA Metro News" },
+                            { id: "marta_atl", name: "MARTA", portal: "MARTA Atlanta News" },
+                            { id: "metrorail_miami", name: "Metrorail", portal: "Miami-Dade Transit Press" },
+                            { id: "baltimore_link", name: "Metro SubwayLink", portal: "MTA Maryland News" },
+                            { id: "rta_cleveland", name: "RTA Rapid", portal: "Cleveland RTA Rapid" },
+                            { id: "sd_trolley", name: "San Diego Trolley", portal: "MTS San Diego News" },
+                            { id: "metro_stlouis", name: "Metro", portal: "MetroLink St. Louis News" },
+                            { id: "max_portland", name: "MAX", portal: "TriMet MAX Portland" },
+                            { id: "link_seattle", name: "Link Light Rail", portal: "Sound Transit Seattle" },
+                            { id: "skyline_honolulu", name: "Skyline", portal: "Skyline Honolulu Rail" }
+                        ]
+                    }
+                ]
+            },
+            {
+                continent: "Europa",
+                countries: [
+                    {
+                        country: "Reino Unido", flag: "🇬🇧",
+                        metros: [
+                            { id: "london_tube", name: "London Underground", portal: "TfL London Press Office" },
+                            { id: "glasgow_sub", name: "Glasgow Subway", portal: "SPT Glasgow News" },
+                            { id: "tyne_wear", name: "Tyne and Wear Metro", portal: "Nexus Tyne & Wear Metro" }
+                        ]
+                    },
+                    {
+                        country: "Francia", flag: "🇫🇷",
+                        metros: [
+                            { id: "metro_paris", name: "Métro de Paris", portal: "Métro Paris RATP News" },
+                            { id: "metro_lyon", name: "Métro de Lyon", portal: "TCL Lyon Métro Actu" },
+                            { id: "metro_marseille", name: "Métro de Marseille", portal: "RTM Marseille Info" },
+                            { id: "metro_lille", name: "Métro de Lille", portal: "ilevia Lille Métro" },
+                            { id: "metro_toulouse", name: "Métro de Toulouse", portal: "Tisséo Toulouse News" },
+                            { id: "metro_rennes", name: "Métro de Rennes", portal: "STAR Rennes Métro" }
+                        ]
+                    },
+                    {
+                        country: "España", flag: "🇪🇸",
+                        metros: [
+                            { id: "metro_madrid", name: "Metro de Madrid", portal: "Gaceta Metro de Madrid" },
+                            { id: "metro_bcn", name: "Metro de Barcelona", portal: "TMB Barcelona Notícies" },
+                            { id: "metro_bilbao", name: "Metro Bilbao", portal: "Metro Bilbao Prensa" },
+                            { id: "metro_valencia_es", name: "Metrovalencia", portal: "Metrovalencia FGV" },
+                            { id: "metro_sevilla", name: "Metro de Sevilla", portal: "Metro de Sevilla Información" },
+                            { id: "metro_malaga", name: "Metro de Málaga", portal: "Metro de Málaga Actualidad" },
+                            { id: "metro_palma", name: "Metro de Palma", portal: "TIB Metro de Palma" },
+                            { id: "metro_granada", name: "Metro de Granada", portal: "Metropolitano Granada" },
+                            { id: "metro_donostia", name: "Metro Donostialdea", portal: "Euskotren Donostia" }
+                        ]
+                    },
+                    {
+                        country: "Italia", flag: "🇮🇹",
+                        metros: [
+                            { id: "metro_roma", name: "Metropolitana di Roma", portal: "ATAC Roma Notizie" },
+                            { id: "metro_milano", name: "Metropolitana di Milano", portal: "ATM Milano Metro Press" },
+                            { id: "metro_napoli", name: "Metropolitana di Napoli", portal: "ANM Napoli Metro" },
+                            { id: "metro_torino", name: "Metropolitana di Torino", portal: "GTT Torino Metro" },
+                            { id: "metro_genova", name: "Metropolitana di Genova", portal: "AMT Genova Metro" },
+                            { id: "metro_brescia", name: "Metropolitana di Brescia", portal: "Brescia Mobilita" },
+                            { id: "metro_catania", name: "Metropolitana di Catania", portal: "FCE Catania Metro" }
+                        ]
+                    },
+                    {
+                        country: "Alemania", flag: "🇩🇪",
+                        metros: [
+                            { id: "ubahn_berlin", name: "U-Bahn Berlin", portal: "BVG Berlin U-Bahn News" },
+                            { id: "ubahn_hamburg", name: "U-Bahn Hamburg", portal: "HOCHBAHN Hamburg" },
+                            { id: "ubahn_munchen", name: "U-Bahn München", portal: "MVG München U-Bahn" },
+                            { id: "ubahn_nurnberg", name: "U-Bahn Nürnberg", portal: "VAG Nürnberg Metro" },
+                            { id: "ubahn_frankfurt", name: "U-Bahn Frankfurt", portal: "VGF Frankfurt U-Bahn" }
+                        ]
+                    },
+                    {
+                        country: "Rusia", flag: "🇷🇺",
+                        metros: [
+                            { id: "metro_moscow", name: "Metro de Moscú", portal: "MosMetro News Agency" },
+                            { id: "metro_spb", name: "Metro de San Petersburgo", portal: "SpbMetro Press" },
+                            { id: "metro_nn", name: "Metro de Nizhni Nóvgorod", portal: "Nizhni Metro News" },
+                            { id: "metro_kazan", name: "Metro de Kazán", portal: "Kazan Metro Press" },
+                            { id: "metro_samara", name: "Metro de Samara", portal: "Samara Metro Inform" },
+                            { id: "metro_novo", name: "Metro de Novosibirsk", portal: "Novosibirsk Metro" },
+                            { id: "metro_ekat", name: "Metro de Ekaterimburgo", portal: "EkatMetro Press" }
+                        ]
+                    },
+                    {
+                        country: "Países Bajos", flag: "🇳🇱",
+                        metros: [
+                            { id: "metro_ams", name: "Metro de Ámsterdam", portal: "GVB Amsterdam Metro" },
+                            { id: "metro_rotterdam", name: "Metro de Róterdam", portal: "RET Rotterdam Metro" }
+                        ]
+                    },
+                    {
+                        country: "Bélgica", flag: "🇧🇪",
+                        metros: [{ id: "metro_bruxelles", name: "Metro de Bruselas", portal: "STIB-MIVB Bruxelles" }]
+                    },
+                    {
+                        country: "Portugal", flag: "🇵🇹",
+                        metros: [
+                            { id: "metro_lisboa", name: "Metro de Lisboa", portal: "Metropolitano de Lisboa" },
+                            { id: "metro_porto", name: "Metro do Porto", portal: "Metro do Porto Notícias" }
+                        ]
+                    },
+                    {
+                        country: "Grecia", flag: "🇬🇷",
+                        metros: [
+                            { id: "metro_athens", name: "Metro de Atenas", portal: "STASY Athens Metro" },
+                            { id: "metro_thess", name: "Metro de Tesalónica", portal: "Thessaloniki Metro News" }
+                        ]
+                    },
+                    {
+                        country: "Polonia", flag: "🇵🇱",
+                        metros: [{ id: "metro_warsaw", name: "Metro de Varsovia", portal: "Metro Warszawskie" }]
+                    },
+                    {
+                        country: "República Checa", flag: "🇨🇿",
+                        metros: [{ id: "metro_prague", name: "Metro de Praga", portal: "DPP Praha Metro" }]
+                    },
+                    {
+                        country: "Austria", flag: "🇦🇹",
+                        metros: [{ id: "ubahn_vienna", name: "U-Bahn de Viena", portal: "Wiener Linien U-Bahn" }]
+                    },
+                    {
+                        country: "Hungría", flag: "🇭🇺",
+                        metros: [{ id: "metro_budapest", name: "Metro de Budapest", portal: "BKK Budapest Metro" }]
+                    },
+                    {
+                        country: "Rumanía", flag: "🇷🇴",
+                        metros: [{ id: "metro_bucharest", name: "Metro de Bucarest", portal: "Metrorex București" }]
+                    },
+                    {
+                        country: "Bulgaria", flag: "🇧🇬",
+                        metros: [{ id: "metro_sofia", name: "Metro de Sofía", portal: "Metropoliten Sofia" }]
+                    },
+                    {
+                        country: "Dinamarca", flag: "🇩🇰",
+                        metros: [{ id: "metro_copenhagen", name: "Metro de Copenhague", portal: "Metroselskabet København" }]
+                    },
+                    {
+                        country: "Suecia", flag: "🇸🇪",
+                        metros: [{ id: "tbana_stockholm", name: "Tunnelbana de Estocolmo", portal: "SL Stockholm Tunnelbana" }]
+                    },
+                    {
+                        country: "Noruega", flag: "🇳🇴",
+                        metros: [{ id: "tbane_oslo", name: "T-bane de Oslo", portal: "Sporveien Oslo T-bane" }]
+                    },
+                    {
+                        country: "Finlandia", flag: "🇫🇮",
+                        metros: [{ id: "metro_helsinki", name: "Metro de Helsinki", portal: "HSL Helsinki Metro" }]
+                    },
+                    {
+                        country: "Suiza", flag: "🇨🇭",
+                        metros: [{ id: "metro_lausanne", name: "Metro de Lausana", portal: "tl Lausanne Métro" }]
+                    },
+                    {
+                        country: "Ucrania", flag: "🇺🇦",
+                        metros: [
+                            { id: "metro_kyiv", name: "Metro de Kiev", portal: "Kyiv Metro Official" },
+                            { id: "metro_kharkiv", name: "Metro de Járkov", portal: "Kharkiv Metro News" },
+                            { id: "metro_dnipro", name: "Metro de Dnipró", portal: "Dnipro Metro Official" }
+                        ]
+                    },
+                    {
+                        country: "Bielorrusia", flag: "🇧🇾",
+                        metros: [{ id: "metro_minsk", name: "Metro de Minsk", portal: "Minsk Metro Press" }]
+                    },
+                    {
+                        country: "Armenia", flag: "🇦🇲",
+                        metros: [{ id: "metro_yerevan", name: "Metro de Ereván", portal: "Yerevan Metro News" }]
+                    },
+                    {
+                        country: "Azerbaiyán", flag: "🇦🇿",
+                        metros: [{ id: "metro_baku", name: "Metro de Bakú", portal: "Baku Metro Official" }]
+                    },
+                    {
+                        country: "Georgia", flag: "🇬🇪",
+                        metros: [{ id: "metro_tbilisi", name: "Metro de Tiflis", portal: "Tbilisi Transport Company" }]
+                    },
+                    {
+                        country: "Turquía", flag: "🇹🇷",
+                        metros: [
+                            { id: "metro_istanbul", name: "Metro de Estambul", portal: "Metro İstanbul Haber" },
+                            { id: "metro_ankara", name: "Metro de Ankara", portal: "EGO Ankara Metro" },
+                            { id: "metro_izmir", name: "Metro de Esmirna", portal: "İzmir Metro Press" },
+                            { id: "bursaray", name: "Bursaray", portal: "Bursa Burulaş Metro" },
+                            { id: "metro_adana", name: "Metro de Adana", portal: "Adana Metro Press" }
+                        ]
+                    }
+                ]
+            },
+            {
+                continent: "Asia",
+                countries: [
+                    {
+                        country: "China", flag: "🇨🇳",
+                        metros: [
+                            { id: "beijing_sub", name: "Beijing Subway", portal: "Beijing Subway News" },
+                            { id: "shanghai_metro", name: "Shanghai Metro", portal: "Shanghai Metro Press" },
+                            { id: "guangzhou_metro", name: "Guangzhou Metro", portal: "Guangzhou Metro News" },
+                            { id: "shenzhen_metro", name: "Shenzhen Metro", portal: "Shenzhen Metro Official" },
+                            { id: "mtr_hk", name: "MTR (Hong Kong)", portal: "MTR Hong Kong Press" },
+                            { id: "nanjing_metro", name: "Nanjing Metro", portal: "Nanjing Metro News" },
+                            { id: "wuhan_metro", name: "Wuhan Metro", portal: "Wuhan Metro Press" },
+                            { id: "chengdu_metro", name: "Chengdu Metro", portal: "Chengdu Metro Official" },
+                            { id: "chongqing_rail", name: "Chongqing Rail Transit", portal: "CRT Chongqing Press" },
+                            { id: "tianjin_metro", name: "Tianjin Metro", portal: "Tianjin Metro News" },
+                            { id: "xian_metro", name: "Xi'an Metro", portal: "Xi'an Metro Press" },
+                            { id: "hangzhou_metro", name: "Hangzhou Metro", portal: "Hangzhou Metro News" },
+                            { id: "shenyang_metro", name: "Shenyang Metro", portal: "Shenyang Metro News" },
+                            { id: "harbin_metro", name: "Harbin Metro", portal: "Harbin Metro News" },
+                            { id: "dalian_metro", name: "Dalian Metro", portal: "Dalian Metro News" },
+                            { id: "changsha_metro", name: "Changsha Metro", portal: "Changsha Metro News" },
+                            { id: "zhengzhou_metro", name: "Zhengzhou Metro", portal: "Zhengzhou Metro News" },
+                            { id: "qingdao_metro", name: "Qingdao Metro", portal: "Qingdao Metro News" },
+                            { id: "kunming_metro", name: "Kunming Metro", portal: "Kunming Metro News" },
+                            { id: "fuzhou_metro", name: "Fuzhou Metro", portal: "Fuzhou Metro News" },
+                            { id: "xiamen_metro", name: "Xiamen Metro", portal: "Xiamen Metro News" },
+                            { id: "suzhou_rail", name: "Suzhou Rail Transit", portal: "Suzhou Rail News" },
+                            { id: "ningbo_rail", name: "Ningbo Rail Transit", portal: "Ningbo Rail News" },
+                            { id: "hefei_metro", name: "Hefei Metro", portal: "Hefei Metro News" },
+                            { id: "nanchang_metro", name: "Nanchang Metro", portal: "Nanchang Metro News" },
+                            { id: "jinan_metro", name: "Jinan Metro", portal: "Jinan Metro News" },
+                            { id: "wuxi_metro", name: "Wuxi Metro", portal: "Wuxi Metro News" },
+                            { id: "changchun_rail", name: "Changchun Rail Transit", portal: "Changchun Rail News" },
+                            { id: "shijiazhuang_metro", name: "Shijiazhuang Metro", portal: "Shijiazhuang Metro" },
+                            { id: "guiyang_metro", name: "Guiyang Metro", portal: "Guiyang Metro News" },
+                            { id: "nanning_metro", name: "Nanning Metro", portal: "Nanning Metro News" },
+                            { id: "taiyuan_metro", name: "Taiyuan Metro", portal: "Taiyuan Metro News" },
+                            { id: "lanzhou_metro", name: "Lanzhou Metro", portal: "Lanzhou Metro News" },
+                            { id: "urumqi_metro", name: "Ürümqi Metro", portal: "Ürümqi Metro News" },
+                            { id: "dongguan_rail", name: "Dongguan Rail Transit", portal: "Dongguan Rail News" },
+                            { id: "foshan_metro", name: "Foshan Metro", portal: "Foshan Metro News" },
+                            { id: "xuzhou_metro", name: "Xuzhou Metro", portal: "Xuzhou Metro News" },
+                            { id: "wenzhou_rail", name: "Wenzhou Rail Transit", portal: "Wenzhou Rail News" },
+                            { id: "jinhua_rail", name: "Jinhua Rail Transit", portal: "Jinhua Rail News" },
+                            { id: "luoyang_metro", name: "Luoyang Metro", portal: "Luoyang Metro News" },
+                            { id: "shaoxing_metro", name: "Shaoxing Metro", portal: "Shaoxing Metro News" }
+                        ]
+                    },
+                    {
+                        country: "Japón", flag: "🇯🇵",
+                        metros: [
+                            { id: "tokyo_metro", name: "Tokyo Metro", portal: "Tokyo Metro News Release" },
+                            { id: "toei_subway", name: "Toei Subway", portal: "Toei Transportation Press" },
+                            { id: "osaka_metro", name: "Osaka Metro", portal: "Osaka Metro Press Release" },
+                            { id: "nagoya_subway", name: "Nagoya Subway", portal: "Nagoya Transportation Bureau" },
+                            { id: "sapporo_subway", name: "Sapporo Municipal Subway", portal: "Sapporo City Transport" },
+                            { id: "sendai_subway", name: "Sendai Subway", portal: "Sendai Transport Bureau" },
+                            { id: "fukuoka_subway", name: "Fukuoka City Subway", portal: "Fukuoka Subway Press" },
+                            { id: "kyoto_subway", name: "Kyoto Subway", portal: "Kyoto Municipal Transport" },
+                            { id: "kobe_subway", name: "Kobe Municipal Subway", portal: "Kobe City Transport" }
+                        ]
+                    },
+                    {
+                        country: "Corea del Sur", flag: "🇰🇷",
+                        metros: [
+                            { id: "seoul_metro", name: "Seoul Metropolitan Subway", portal: "Seoul Metro Press Release" },
+                            { id: "busan_metro", name: "Busan Metro", portal: "Humetro Busan News" },
+                            { id: "daegu_metro", name: "Daegu Metro", portal: "DTRO Daegu Metro" },
+                            { id: "daejeon_metro", name: "Daejeon Metro", portal: "DJET Daejeon Metro" },
+                            { id: "gwangju_metro", name: "Gwangju Metro", portal: "GRTC Gwangju Metro" }
+                        ]
+                    },
+                    {
+                        country: "India", flag: "🇮🇳",
+                        metros: [
+                            { id: "delhi_metro", name: "Delhi Metro", portal: "DMRC Delhi Metro Press" },
+                            { id: "mumbai_metro", name: "Mumbai Metro", portal: "MMRDA Mumbai Metro" },
+                            { id: "kolkata_metro", name: "Kolkata Metro", portal: "Metro Railway Kolkata" },
+                            { id: "chennai_metro", name: "Chennai Metro", portal: "CMRL Chennai Metro" },
+                            { id: "namma_metro", name: "Namma Metro", portal: "BMRCL Bengaluru Metro" },
+                            { id: "hyderabad_metro", name: "Hyderabad Metro", portal: "L&T Metro Hyderabad" },
+                            { id: "ahmedabad_metro", name: "Ahmedabad Metro", portal: "GMRC Gujarat Metro" },
+                            { id: "jaipur_metro", name: "Jaipur Metro", portal: "JMRC Jaipur Metro" },
+                            { id: "kochi_metro", name: "Kochi Metro", portal: "KMRL Kochi Metro" },
+                            { id: "lucknow_metro", name: "Lucknow Metro", portal: "UPMRC Lucknow Metro" },
+                            { id: "kanpur_metro", name: "Kanpur Metro", portal: "UPMRC Kanpur Metro" },
+                            { id: "nagpur_metro", name: "Nagpur Metro", portal: "Maha Metro Nagpur" },
+                            { id: "pune_metro", name: "Pune Metro", portal: "Maha Metro Pune" },
+                            { id: "noida_metro", name: "Noida Metro", portal: "NMRC Noida Metro" },
+                            { id: "rapid_metro_ggn", name: "Rapid Metro", portal: "Gurugram Rapid Metro" },
+                            { id: "navi_mumbai_metro", name: "Navi Mumbai Metro", portal: "CIDCO Navi Mumbai" },
+                            { id: "agra_metro", name: "Agra Metro", portal: "UPMRC Agra Metro" }
+                        ]
+                    },
+                    {
+                        country: "Irán", flag: "🇮🇷",
+                        metros: [
+                            { id: "tehran_metro", name: "Tehran Metro", portal: "Tehran Metro News" },
+                            { id: "mashhad_metro", name: "Mashhad Metro", portal: "Mashhad Urban Railway" },
+                            { id: "shiraz_metro", name: "Shiraz Metro", portal: "Shiraz Urban Railway" },
+                            { id: "tabriz_metro", name: "Tabriz Metro", portal: "Tabriz Urban Railway" },
+                            { id: "isfahan_metro", name: "Isfahan Metro", portal: "Isfahan Urban Railway" },
+                            { id: "karaj_metro", name: "Karaj Metro", portal: "Karaj Metro News" }
+                        ]
+                    },
+                    {
+                        country: "Taiwán", flag: "🇹🇼",
+                        metros: [
+                            { id: "taipei_metro", name: "Taipei Metro", portal: "Taipei Metro Press" },
+                            { id: "ntp_metro", name: "New Taipei Metro", portal: "New Taipei Metro News" },
+                            { id: "taoyuan_metro", name: "Taoyuan Metro", portal: "Taoyuan Metro Press" },
+                            { id: "taichung_metro", name: "Taichung Metro", portal: "Taichung Metro News" },
+                            { id: "kaohsiung_metro", name: "Kaohsiung Metro", portal: "KRTC Kaohsiung Metro" }
+                        ]
+                    },
+                    {
+                        country: "Pakistán", flag: "🇵🇰",
+                        metros: [{ id: "lahore_metro", name: "Lahore Metro", portal: "PMA Lahore Metro" }]
+                    },
+                    {
+                        country: "Bangladesh", flag: "🇧🇩",
+                        metros: [{ id: "dhaka_metro", name: "Dhaka Metro", portal: "DMTCL Dhaka Metro" }]
+                    },
+                    {
+                        country: "Vietnam", flag: "🇻🇳",
+                        metros: [
+                            { id: "hanoi_metro", name: "Hanoi Metro", portal: "Hanoi Metro News" },
+                            { id: "hcm_metro", name: "Ho Chi Minh City Metro", portal: "MAUR HCMC Metro" }
+                        ]
+                    },
+                    {
+                        country: "Tailandia", flag: "🇹🇭",
+                        metros: [
+                            { id: "bangkok_mrt", name: "Bangkok MRT", portal: "MRTA Bangkok Press" },
+                            { id: "bts_skytrain", name: "BTS Skytrain", portal: "BTS Bangkok News" }
+                        ]
+                    },
+                    {
+                        country: "Indonesia", flag: "🇮🇩",
+                        metros: [{ id: "jakarta_mrt", name: "Jakarta MRT", portal: "MRT Jakarta Newsroom" }]
+                    },
+                    {
+                        country: "Filipinas", flag: "🇵🇭",
+                        metros: [
+                            { id: "manila_mrt", name: "Manila MRT", portal: "DOTr Manila MRT" },
+                            { id: "manila_lrt", name: "Manila LRT", portal: "LRTA Manila News" }
+                        ]
+                    },
+                    {
+                        country: "Malasia", flag: "🇲🇾",
+                        metros: [{ id: "rapid_kl", name: "Rapid KL", portal: "Prasarana Rapid KL" }]
+                    },
+                    {
+                        country: "Singapur", flag: "🇸🇬",
+                        metros: [{ id: "singapore_mrt", name: "Singapore MRT", portal: "LTA Singapore MRT" }]
+                    },
+                    {
+                        country: "Emiratos Árabes Unidos", flag: "🇦🇪",
+                        metros: [{ id: "dubai_metro", name: "Dubai Metro", portal: "RTA Dubai Metro News" }]
+                    },
+                    {
+                        country: "Catar", flag: "🇶🇦",
+                        metros: [{ id: "doha_metro", name: "Doha Metro", portal: "Qatar Rail Doha Metro" }]
+                    },
+                    {
+                        country: "Arabia Saudita", flag: "🇸🇦",
+                        metros: [{ id: "riyadh_metro", name: "Riyadh Metro", portal: "RRC Riyadh Metro" }]
+                    },
+                    {
+                        country: "Israel", flag: "🇮🇱",
+                        metros: [{ id: "carmelit", name: "Carmelit", portal: "Carmelit Haifa News" }]
+                    },
+                    {
+                        country: "Corea del Norte", flag: "🇰🇵",
+                        metros: [{ id: "pyongyang_metro", name: "Pyongyang Metro", portal: "Pyongyang Metro Inform" }]
+                    }
+                ]
+            },
+            {
+                continent: "África",
+                countries: [
+                    {
+                        country: "Egipto", flag: "🇪🇬",
+                        metros: [{ id: "cairo_metro", name: "Cairo Metro", portal: "NAT Cairo Metro Press" }]
+                    },
+                    {
+                        country: "Argelia", flag: "🇩🇿",
+                        metros: [{ id: "algiers_metro", name: "Algiers Metro", portal: "EMA Métro d'Alger" }]
+                    },
+                    {
+                        country: "Nigeria", flag: "🇳🇬",
+                        metros: [{ id: "lagos_rail", name: "Lagos Rail Mass Transit", portal: "LAMATA Lagos Rail" }]
+                    }
+                ]
+            },
+            {
+                continent: "Oceanía",
+                countries: [
+                    {
+                        country: "Australia", flag: "🇦🇺",
+                        metros: [
+                            { id: "sydney_metro", name: "Sydney Metro", portal: "Sydney Metro Press Office" },
+                            { id: "melbourne_metro", name: "Melbourne Metro", portal: "Metro Trains Melbourne" }
+                        ]
+                    },
+                    {
+                        country: "Nueva Zelanda", flag: "🇳🇿",
+                        metros: [{ id: "auckland_rail", name: "Auckland urban rail", portal: "Auckland Transport Rail" }]
+                    }
+                ]
+            }
+        ];
+
+        /* NEWS TEMPLATES & GENERATOR LOGIC FOR INFINITE ACCUMULATION */
+        const newsTemplates = [
+            {
+                cat: "Infraestructura",
+                title: "Inauguran la fase de tunelación subterránea para conectar la nueva estación intermodal",
+                summary: "Ingenieros completan con éxito la perforación del tramo de 4.2 kilómetros utilizando tuneladoras de última generación con cero impacto en superficie.",
+                body: "<p>Las autoridades de transporte masivo anunciaron la culminación del tramo subterráneo principal que unirá los distritos neurálgicos de la metrópoli.</p><p>La obra incluyó la instalación de anillos de hormigón reforzado y sistemas de impermeabilización de alta resistencia técnica. La nueva estación dispondrá de andenes de más de 120 metros preparados para composiciones de gran capacidad.</p>"
+            },
+            {
+                cat: "Innovación",
+                title: "Despliegan sistema de conducción automática sin conductor CBTC de nivel GoA4",
+                summary: "La modernización de la señalización digital reduce el intervalo entre trenes a solo 85 segundos durante las horas punta de mayor afluencia.",
+                body: "<p>El nuevo centro de control operativo integrado permite supervisar en tiempo real la posición milimétrica de cada convoy en la red.</p><p>Con la implementación del estándar CBTC (Communications-Based Train Control), se optimiza el consumo energético de aceleración y frenado hasta en un 22% en comparación con la señalización analógica previa.</p>"
+            },
+            {
+                cat: "Flota",
+                title: "Entran en servicio comercial 20 nuevos convoys con pasillo continuo y climatización adaptativa",
+                summary: "Las unidades de última generación cuentan con motores de tracción asíncronos, pantallas de información dinámica y cámaras de videovigilancia IA.",
+                body: "<p>El fabricante entregó el primer lote de trenes diseñados bajo estrictos parámetros de accesibilidad e insonorización interior.</p><p>Cada coche incorpora tomas de carga USB, iluminación LED biosostenible que ajusta su temperatura de color según la hora del día y sistemas de ventilación con ionización de aire.</p>"
+            },
+            {
+                cat: "Servicio",
+                title: "Récord histórico de puntualidad del 99.4% tras completar el plan de mantenimiento nocturno",
+                summary: "El programa integral de auscultación ultrasónica de vías garantiza una operatividad continua sin interrupciones en la franja diurna.",
+                body: "<p>Los reportes de rendimiento operativo confirman que el 99.4% de las frecuencias se cumplieron estrictamente en horario durante el último trimestre.</p><p>El uso de vagones auscultadores dotados de sensores láser nocturnos ha permitido corregir desviaciones milimétricas en el carril antes de que generen vibraciones o demoras.</p>"
+            },
+            {
+                cat: "Tarifas",
+                title: "Habilitan el pago directo con tarjetas bancarias contactless y billeteras virtuales en el 100% de torniquetes",
+                summary: "Los viajeros ahora pueden acceder instantáneamente aproximando su reloj inteligente o tarjeta sin necesidad de comprar billetes físicos.",
+                body: "<p>La transformación digital del sistema de billetaje elimina definitivamente las colas en taquillas y máquinas expendedoras.</p><p>El validador multifunción calcula automáticamente la tarifa diaria más económica para el usuario según el número de trasbordos realizados en un intervalo de 90 minutos.</p>"
+            }
+        ];
+
+        const sampleImages = [
+            "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=800&q=80",
+            "https://images.unsplash.com/photo-1517649763962-0c623266ddc0?auto=format&fit=crop&w=800&q=80",
+            "https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&fit=crop&w=800&q=80",
+            "https://images.unsplash.com/photo-1509299349698-dd22323b5963?auto=format&fit=crop&w=800&q=80",
+            "https://images.unsplash.com/photo-1543716627-839b54c40519?auto=format&fit=crop&w=800&q=80",
+            "https://images.unsplash.com/photo-1506521781263-d8422e82f27a?auto=format&fit=crop&w=800&q=80",
+            "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=800&q=80",
+            "https://images.unsplash.com/photo-1515165562839-978bbcf1b267?auto=format&fit=crop&w=800&q=80",
+            "https://images.unsplash.com/photo-1534430480872-3498386e7856?auto=format&fit=crop&w=800&q=80",
+            "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=800&q=80"
+        ];
+
+        // Flatten all metros into a fast lookup array
+        let flatMetroList = [];
+        metroDataHierarchy.forEach(cont => {
+            cont.countries.forEach(c => {
+                c.metros.forEach(m => {
+                    flatMetroList.push({
+                        ...m,
+                        country: c.country,
+                        flag: c.flag,
+                        continent: cont.continent
+                    });
+                });
+            });
+        });
+
+        // App state
+        let newsDatabase = [];
+        let selectedMetroId = "all";
+        let selectedCategory = "all";
+        let searchQuery = "";
+
+        // Build initial seed news articles
+        function generateInitialNews() {
+            newsDatabase = [];
+            let dateCounter = 29;
+
+            flatMetroList.forEach((metro, idx) => {
+                // Generate 2 initial articles for every single metro
+                for (let i = 0; i < 2; i++) {
+                    const template = newsTemplates[(idx + i) % newsTemplates.length];
+                    const img = sampleImages[(idx + i) % sampleImages.length];
+                    const day = Math.max(1, (dateCounter - (idx % 25)));
+                    
+                    newsDatabase.push({
+                        id: `news_${metro.id}_${i}_${Date.now()}`,
+                        metroId: metro.id,
+                        metroName: metro.name,
+                        country: metro.country,
+                        flag: metro.flag,
+                        portal: metro.portal,
+                        category: template.cat,
+                        title: `${metro.name}: ${template.title}`,
+                        summary: template.summary,
+                        body: template.body,
+                        image: img,
+                        date: `${day} Sep, 2026`,
+                        officialUrl: `https://www.google.com/search?q=${encodeURIComponent(metro.name + ' oficial noticias')}`
+                    });
+                }
+            });
+
+            // Sort by date/id descending
+            newsDatabase.reverse();
+        }
+
+        // Render Sidebar Navigation
+        function renderSidebar() {
+            const sidebarContainer = document.getElementById("metro-sidebar-tree");
+            sidebarContainer.innerHTML = "";
+            const filterText = document.getElementById("sidebar-metro-search").value.toLowerCase().trim();
+
+            metroDataHierarchy.forEach(continentObj => {
+                let matchesInContinent = false;
+
+                // Create Continent Container
+                const contDiv = document.createElement("div");
+                contDiv.className = "space-y-1";
+
+                const contTitle = document.createElement("div");
+                contTitle.className = "text-[10px] font-black uppercase tracking-wider text-slate-400 dark:text-slate-500 pt-2 px-1 flex items-center justify-between";
+                contTitle.innerHTML = `<span>${continentObj.continent}</span>`;
+                contDiv.appendChild(contTitle);
+
+                continentObj.countries.forEach(countryObj => {
+                    const filteredMetros = countryObj.metros.filter(m => 
+                        m.name.toLowerCase().includes(filterText) ||
+                        countryObj.country.toLowerCase().includes(filterText) ||
+                        m.portal.toLowerCase().includes(filterText)
+                    );
+
+                    if (filteredMetros.length === 0) return;
+                    matchesInContinent = true;
+
+                    const countryBox = document.createElement("div");
+                    countryBox.className = "pl-1 space-y-1 my-1";
+
+                    const countryHeader = document.createElement("div");
+                    countryHeader.className = "text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center space-x-1.5 py-0.5 px-1";
+                    countryHeader.innerHTML = `<span>${countryObj.flag}</span> <span>${countryObj.country}</span>`;
+                    countryBox.appendChild(countryHeader);
+
+                    const metroUl = document.createElement("ul");
+                    metroUl.className = "pl-3 space-y-0.5 border-l-2 border-slate-200 dark:border-slate-700 ml-2";
+
+                    filteredMetros.forEach(metro => {
+                        const isSelected = selectedMetroId === metro.id;
+                        const newsCount = newsDatabase.filter(n => n.metroId === metro.id).length;
+
+                        const li = document.createElement("li");
+                        li.innerHTML = `
+                            <button data-id="${metro.id}" class="w-full flex items-center justify-between py-1.5 px-2 rounded-lg text-left text-xs transition-all ${
+                                isSelected
+                                ? 'bg-blue-600 text-white font-bold shadow-sm'
+                                : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700/60 hover:text-slate-900 dark:hover:text-white'
+                            }">
+                                <span class="truncate pr-1">${metro.name}</span>
+                                <span class="text-[9px] px-1.5 py-0.2 rounded-full font-extrabold ${isSelected ? 'bg-white/20 text-white' : 'bg-slate-200 dark:bg-slate-700 text-slate-500 dark:text-slate-400'}">
+                                    ${newsCount}
+                                </span>
+                            </button>
+                        `;
+
+                        li.querySelector("button").addEventListener("click", () => {
+                            selectedMetroId = metro.id;
+                            selectedCategory = "all";
+                            updateCategoryPillsUI();
+                            renderSidebar();
+                            renderActiveHero();
+                            renderNewsGrid();
+                            closeSidebarMobile();
+                        });
+
+                        metroUl.appendChild(li);
+                    });
+
+                    countryBox.appendChild(metroUl);
+                    contDiv.appendChild(countryBox);
+                });
+
+                if (matchesInContinent) {
+                    sidebarContainer.appendChild(contDiv);
+                }
+            });
+
+            document.getElementById("total-global-count").textContent = newsDatabase.length;
+        }
+
+        // Render Active Metro Hero Header
+        function renderActiveHero() {
+            const heroEl = document.getElementById("active-metro-hero");
+
+            if (selectedMetroId === "all") {
+                heroEl.innerHTML = `
+                    <div class="p-6 sm:p-7 bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 text-white relative overflow-hidden">
+                        <div class="relative z-10 space-y-2 max-w-3xl">
+                            <div class="flex items-center space-x-2 text-xs font-bold text-sky-300 uppercase tracking-widest">
+                                <i class="fa-solid fa-earth-americas"></i>
+                                <span>Red Multirred Global Monitoreada</span>
+                            </div>
+                            <h2 class="text-2xl sm:text-3xl font-black tracking-tight">Portal Consolidado de Noticias de Metros del Mundo</h2>
+                            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                                Cobertura directa de noticias, comunicados de prensa y actualizaciones de más de 160 sistemas de transporte masivo subterráneo en los 5 continentes.
+                            </p>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            const activeMetro = flatMetroList.find(m => m.id === selectedMetroId);
+            if (!activeMetro) return;
+
+            const metroNewsCount = newsDatabase.filter(n => n.metroId === activeMetro.id).length;
+
+            heroEl.innerHTML = `
+                <div class="p-6 sm:p-7 bg-gradient-to-r from-slate-900 via-blue-950 to-indigo-950 text-white relative overflow-hidden">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
+                        <div class="space-y-2 max-w-xl">
+                            <div class="flex items-center space-x-2 text-xs font-bold text-blue-400">
+                                <span class="text-xl">${activeMetro.flag}</span>
+                                <span class="uppercase tracking-widest">${activeMetro.country} &bull; ${activeMetro.continent}</span>
+                            </div>
+                            <h2 class="text-2xl sm:text-3xl font-black tracking-tight">${activeMetro.name}</h2>
+                            <p class="text-xs text-slate-300 flex items-center gap-1.5 font-medium">
+                                <i class="fa-solid fa-newspaper text-blue-400"></i>
+                                <span>Fuente principal: <strong>${activeMetro.portal}</strong></span>
+                            </p>
+                        </div>
+
+                        <div class="bg-white/10 backdrop-blur border border-white/10 rounded-xl p-3 text-center sm:text-right">
+                            <p class="text-[10px] font-bold text-slate-300 uppercase">Noticias Registradas</p>
+                            <p class="text-2xl font-black text-sky-400">${metroNewsCount} Artículos</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Render News Cards
+        function renderNewsGrid() {
+            const gridEl = document.getElementById("news-grid");
+            const emptyEl = document.getElementById("empty-state");
+            gridEl.innerHTML = "";
+
+            let list = newsDatabase.filter(item => {
+                // Filter by metro
+                if (selectedMetroId !== "all" && item.metroId !== selectedMetroId) return false;
+                // Filter by category
+                if (selectedCategory !== "all" && item.category !== selectedCategory) return false;
+                // Filter by search query
+                if (searchQuery.trim() !== "") {
+                    const q = searchQuery.toLowerCase();
+                    const mTitle = item.title.toLowerCase().includes(q);
+                    const mSum = item.summary.toLowerCase().includes(q);
+                    const mMetro = item.metroName.toLowerCase().includes(q);
+                    const mCountry = item.country.toLowerCase().includes(q);
+                    const mPortal = item.portal.toLowerCase().includes(q);
+                    if (!mTitle && !mSum && !mMetro && !mCountry && !mPortal) return false;
+                }
+                return true;
+            });
+
+            document.getElementById("showing-count-badge").textContent = list.length;
+
+            if (list.length === 0) {
+                emptyEl.classList.remove("hidden");
+                gridEl.classList.add("hidden");
+                return;
+            }
+
+            emptyEl.classList.add("hidden");
+            gridEl.classList.remove("hidden");
+
+            list.forEach(item => {
+                const card = document.createElement("article");
+                card.className = "bg-white dark:bg-slate-800 rounded-2xl border border-slate-200/80 dark:border-slate-700/80 overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 flex flex-col group";
+
+                card.innerHTML = `
+                    <div class="relative overflow-hidden h-44 bg-slate-200 dark:bg-slate-700">
+                        <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute top-3 left-3 flex flex-wrap gap-1">
+                            <span class="text-[9px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-slate-900/80 text-white backdrop-blur shadow-sm">
+                                ${item.category}
+                            </span>
+                        </div>
+                        <div class="absolute bottom-2.5 right-2.5">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-md bg-blue-600/90 text-white backdrop-blur shadow-sm flex items-center gap-1">
+                                <span>${item.flag}</span>
+                                <span>${item.country}</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="p-4 flex-1 flex flex-col justify-between space-y-3">
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between text-[11px] text-slate-400 dark:text-slate-500 font-medium">
+                                <span class="font-bold text-blue-600 dark:text-blue-400 truncate max-w-[180px]">
+                                    <i class="fa-solid fa-bullhorn text-[9px]"></i> ${item.portal}
+                                </span>
+                                <span class="flex-shrink-0"><i class="fa-regular fa-calendar"></i> ${item.date}</span>
+                            </div>
+
+                            <h3 class="font-bold text-slate-900 dark:text-white text-sm leading-snug group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2">
+                                ${item.title}
+                            </h3>
+
+                            <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-3">
+                                ${item.summary}
+                            </p>
+                        </div>
+
+                        <button class="read-btn w-full py-2.5 px-3 rounded-xl bg-slate-100 dark:bg-slate-700/80 hover:bg-blue-600 hover:text-white dark:hover:bg-blue-600 text-slate-700 dark:text-slate-200 text-xs font-bold transition-all flex items-center justify-center space-x-2 shadow-sm">
+                            <span>Ir a la página a leer la noticia</span>
+                            <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </button>
+                    </div>
+                `;
+
+                card.querySelector(".read-btn").addEventListener("click", () => {
+                    openModal(item);
+                });
+
+                gridEl.appendChild(card);
+            });
+        }
+
+        // Open Full News Reader Modal
+        function openModal(item) {
+            document.getElementById("modal-flag").textContent = item.flag;
+            document.getElementById("modal-portal").textContent = item.portal;
+            document.getElementById("modal-category").textContent = item.category;
+            document.getElementById("modal-title").textContent = item.title;
+            document.getElementById("modal-date").textContent = item.date;
+            document.getElementById("modal-metro").textContent = `${item.metroName} (${item.country})`;
+            document.getElementById("modal-image").src = item.image;
+            document.getElementById("modal-body").innerHTML = item.body;
+            document.getElementById("modal-official-link").href = item.officialUrl;
+
+            const modal = document.getElementById("article-modal");
+            modal.classList.remove("hidden");
+            setTimeout(() => {
+                modal.classList.remove("opacity-0");
+                modal.querySelector("div").classList.remove("scale-95");
+            }, 10);
+            document.body.style.overflow = "hidden";
+        }
+
+        function closeModal() {
+            const modal = document.getElementById("article-modal");
+            modal.classList.add("opacity-0");
+            modal.querySelector("div").classList.add("scale-95");
+            setTimeout(() => {
+                modal.classList.add("hidden");
+                document.body.style.overflow = "";
+            }, 200);
+        }
+
+        // Generate new dynamic news batch on "Cargar más"
+        function loadMoreNewsBatch() {
+            const batchSize = 12;
+            const targetMetros = selectedMetroId === "all" 
+                ? flatMetroList 
+                : flatMetroList.filter(m => m.id === selectedMetroId);
+
+            for (let i = 0; i < batchSize; i++) {
+                const metro = targetMetros[Math.floor(Math.random() * targetMetros.length)];
+                const template = newsTemplates[Math.floor(Math.random() * newsTemplates.length)];
+                const img = sampleImages[Math.floor(Math.random() * sampleImages.length)];
+                const randomDay = Math.floor(Math.random() * 28) + 1;
+
+                const newArticle = {
+                    id: `news_${metro.id}_dyn_${Date.now()}_${i}`,
+                    metroId: metro.id,
+                    metroName: metro.name,
+                    country: metro.country,
+                    flag: metro.flag,
+                    portal: metro.portal,
+                    category: template.cat,
+                    title: `${metro.name}: ${template.title}`,
+                    summary: template.summary,
+                    body: template.body,
+                    image: img,
+                    date: `${randomDay} Sep, 2026`,
+                    officialUrl: `https://www.google.com/search?q=${encodeURIComponent(metro.name + ' oficial prensa noticias')}`
+                };
+
+                newsDatabase.push(newArticle);
+            }
+
+            renderSidebar();
+            renderNewsGrid();
+        }
+
+        function updateCategoryPillsUI() {
+            const btns = document.querySelectorAll("#category-filters .cat-btn");
+            btns.forEach(btn => {
+                if (btn.dataset.category === selectedCategory) {
+                    btn.className = "cat-btn px-3 py-1.5 text-xs font-bold rounded-xl bg-blue-600 text-white shadow-sm transition-all";
+                } else {
+                    btn.className = "cat-btn px-3 py-1.5 text-xs font-semibold rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 transition-all";
+                }
+            });
+        }
+
+        function openSidebarMobile() {
+            document.getElementById("sidebar").classList.remove("-translate-x-full");
+            document.getElementById("sidebar-overlay").classList.remove("hidden");
+        }
+
+        function closeSidebarMobile() {
+            document.getElementById("sidebar").classList.add("-translate-x-full");
+            document.getElementById("sidebar-overlay").classList.add("hidden");
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            document.getElementById("header-metro-count").textContent = `${flatMetroList.length} Redes Integradas`;
+
+            generateInitialNews();
+            renderSidebar();
+            renderActiveHero();
+            renderNewsGrid();
+
+            // All Metros Button
+            document.getElementById("btn-all-metros").addEventListener("click", () => {
+                selectedMetroId = "all";
+                selectedCategory = "all";
+                updateCategoryPillsUI();
+                renderSidebar();
+                renderActiveHero();
+                renderNewsGrid();
+                closeSidebarMobile();
+            });
+
+            document.getElementById("logo-home-btn").addEventListener("click", () => {
+                selectedMetroId = "all";
+                selectedCategory = "all";
+                updateCategoryPillsUI();
+                renderSidebar();
+                renderActiveHero();
+                renderNewsGrid();
+            });
+
+            // Sidebar Filter Input
+            document.getElementById("sidebar-metro-search").addEventListener("input", renderSidebar);
+
+            // Real-time Global Search Handlers
+            const globalSearch = document.getElementById("global-search");
+            const globalSearchMobile = document.getElementById("global-search-mobile");
+            const clearGlobalBtn = document.getElementById("clear-global-search");
+
+            function handleSearchInput(val) {
+                searchQuery = val;
+                if (searchQuery.trim() !== "") {
+                    clearGlobalBtn.classList.remove("hidden");
+                } else {
+                    clearGlobalBtn.classList.add("hidden");
+                }
+                renderNewsGrid();
+            }
+
+            globalSearch.addEventListener("input", (e) => handleSearchInput(e.target.value));
+            globalSearchMobile.addEventListener("input", (e) => handleSearchInput(e.target.value));
+
+            clearGlobalBtn.addEventListener("click", () => {
+                globalSearch.value = "";
+                globalSearchMobile.value = "";
+                searchQuery = "";
+                clearGlobalBtn.classList.add("hidden");
+                renderNewsGrid();
+            });
+
+            // Category Filters
+            document.getElementById("category-filters").addEventListener("click", (e) => {
+                const btn = e.target.closest(".cat-btn");
+                if (!btn) return;
+                selectedCategory = btn.dataset.category;
+                updateCategoryPillsUI();
+                renderNewsGrid();
+            });
+
+            // Load More Button
+            document.getElementById("load-more-btn").addEventListener("click", loadMoreNewsBatch);
+
+            // Mobile Navigation Toggle
+            document.getElementById("toggle-sidebar-btn").addEventListener("click", openSidebarMobile);
+            document.getElementById("sidebar-overlay").addEventListener("click", closeSidebarMobile);
+
+            // Article Modal Close
+            document.getElementById("close-modal").addEventListener("click", closeModal);
+            document.getElementById("close-modal-btn").addEventListener("click", closeModal);
+
+            // Dark Theme Toggle
+            const themeBtn = document.getElementById("theme-toggle");
+            const darkIcon = document.getElementById("theme-toggle-dark-icon");
+            const lightIcon = document.getElementById("theme-toggle-light-icon");
+
+            themeBtn.addEventListener("click", () => {
+                document.documentElement.classList.toggle("dark");
+                darkIcon.classList.toggle("hidden");
+                lightIcon.classList.toggle("hidden");
+            });
+        });
+    </script>
+</body>
+</html>
